@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIAM - A.I.D. Login</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #00ff41;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            background-image: linear-gradient(rgba(0, 20, 0, 0.9), rgba(0, 20, 0, 0.9)), url('https://img.freepik.com/fotos-gratis/fundo-de-tecnologia-digital-com-codigo-binario_53876-117565.jpg');
+            background-size: cover;
+        }
+
+        h1 { font-size: 60px; margin-bottom: 10px; text-shadow: 0 0 20px #00ff41; }
+        h3 { color: #fff; margin-top: 0; letter-spacing: 3px; }
+
+        .btn-start {
+            margin-top: 50px;
+            padding: 20px 50px;
+            font-size: 24px;
+            background-color: #003300;
+            color: #fff;
+            border: 2px solid #00ff41;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-family: inherit;
+            transition: 0.3s;
+            text-decoration: none; /* Remove sublinhado do link */
+            display: inline-block;
+            animation: piscar 2s infinite;
+        }
+
+        .btn-start:hover {
+            background-color: #00ff41;
+            color: #000;
+            box-shadow: 0 0 30px #00ff41;
+        }
+
+        .creditos {
+            margin-top: 80px;
+            font-size: 14px;
+            color: #888;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            width: 80%;
+        }
+
+        @keyframes piscar {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        <h1>🕵️ A.I.D.</h1>
+        <h3>AGÊNCIA DE INVESTIGAÇÃO DE DADOS</h3>
+        <p>Projeto LIAM - Laboratório Interativo de Alfabetização Matemática</p>
+    </div>
+
+    <a href="missao_1a.html" class="btn-start">INICIAR OPERAÇÃO</a>
+
+    <div class="creditos">
+        <p>Desenvolvido pelos alunos do Curso de Licenciatura em Matemática - UNIVESP</p>
+        <p>Projeto Integrador IV - 2026</p>
+    </div>
+
+</body>
+</html>

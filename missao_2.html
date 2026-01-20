@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.I.D. - Detector de Fraudes</title>
+
+    <style>
+        /* --- TEMA HACKER (Consistente com as fases anteriores) --- */
+        body {
+            background-color: #0d0d0d;
+            color: #00ff41;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        #dispositivo-analise {
+            width: 700px;
+            border: 2px solid #00ff41;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #001a00;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+            text-align: center;
+        }
+
+        h2 { border-bottom: 1px dashed #00ff41; padding-bottom: 10px; margin-top: 0; }
+
+        /* --- O GRÁFICO (A "Prova") --- */
+        #painel-grafico {
+            background-color: #fff; /* Fundo branco para parecer "papel/jornal" */
+            color: #000; /* Texto preto para contraste */
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            position: relative;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        /* Título da Notícia Falsa */
+        #titulo-grafico {
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            color: #d00; /* Vermelho sensacionalista */
+        }
+
+        /* Área das Barras */
+        .container-barras {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: flex-start; /* Alinha barras à esquerda */
+            border-left: 2px solid #333; /* Eixo Y */
+            border-bottom: 2px solid #333; /* Eixo X */
+            padding: 10px;
+        }
+
+        /* A Barra Individual */
+        .barra {
+            height: 30px;
+            background-color: #0055aa; /* Azul genérico */
+            color: #fff;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            white-space: nowrap;
+            transition: width 1s; /* Animação ao carregar */
+            width: 0%; /* Começa zerado para animar */
+        }
+
+        .eixo-texto {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            font-family: Arial, sans-serif;
+            align-self: flex-start;
+        }
+
+        /* --- BOTÕES DE AÇÃO --- */
+        #controles {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .btn-acao {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            transition: 0.2s;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        #btn-validar { background-color: #003300; color: #00ff41; border-color: #00ff41; }
+        #btn-validar:hover { background-color: #00ff41; color: #000; }
+
+        #btn-denunciar { background-color: #330000; color: #ff3333; border-color: #ff3333; }
+        #btn-denunciar:hover { background-color: #ff3333; color: #fff; }
+
+        /* --- FEEDBACK DO AGENTE SIGMA --- */
+        #agente-box {
+            margin-top: 20px;
+            border-top: 1px dashed #00ff41;
+            padding-top: 10px;
+            min-height: 60px;
+            color: #ccffcc;
+        }
+
+        .destaque-erro { color: #ffff00; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div id="dispositivo-analise">
+        <div style="display:flex; justify-content:space-between;">
+            <span>👁️ DETECTOR DE FRAUDES V1.0</span>
+            <span id="contador-casos">Caso: 1/3</span>
+        </div>
+        
+        <h2>ANALISE A MÍDIA ABAIXO</h2>
+
+        <div id="painel-grafico">
+            <div id="titulo-grafico">Carregando notícia...</div>
+            <div class="container-barras" id="area-barras">
+                </div>
+            <div class="eixo-texto" id="texto-eixo">Fonte: Dados Não Verificados</div>
+        </div>
+
+        <div id="agente-box">
+            <strong>🕵️ AGENTE SIGMA:</strong>
+            <span id="msg-sigma">Este gráfico é CONFIÁVEL ou foi MANIPULADO? Analise a escala e as proporções.</span>
+        </div>
+
+        <div id="controles">
+            <button id="btn-validar" class="btn-acao" onclick="analisar(true)">✅ VALIDAR</button>
+            <button id="btn-denunciar" class="btn-acao" onclick="analisar(false)">🚫 DENUNCIAR</button>
+        </div>
+        
+        <button id="btn-proximo" class="btn-acao" style="display:none; margin-top:15px; width:100%; background:#fff; color:#000;" onclick="proximoCaso()">PRÓXIMO CASO >></button>
+    </div>
+
+    <script>
+        // --- BANCO DE DADOS DAS FRAUDES ---
+        // Aqui vocês podem criar seus próprios desafios!
+        const casos = [
+            {
+                // CASO 1: Eixo Truncado (Clássico)
+                titulo: "URGENTE: LUCRO DA EMPRESA RIVAL DISPARA!",
+                e_confiavel: false, // É Fake
+                barras: [
+                    { nome: "JANEIRO",  valor: "R$ 950 mi", tamanho: "23%" }, // Parece pequeno
+                    { nome: "FEVEREIRO", valor: "R$ 980 mi", tamanho: "100%" }  // Parece GIGANTE
+                ],
+                explicacao: "FRAUDE DETECTADA! Olhe os valores: 950 para 980 é um aumento pequeno (3%). Mas a barra visual cresceu 3x! Isso acontece porque o eixo não começou no zero (Eixo Truncado)."
+            },
+            {
+                // CASO 2: Gráfico Honesto (Para confundir o aluno)
+                titulo: "Relatório Anual de Vendas - Setor Norte",
+                e_confiavel: true, // É Verdadeiro
+                barras: [
+                    { nome: "2024", valor: "100 un.", tamanho: "50%" },
+                    { nome: "2025", valor: "200 un.", tamanho: "100%" }
+                ],
+                explicacao: "ANÁLISE CORRETA. O gráfico é honesto. O valor dobrou (100 para 200) e a barra visualmente também dobrou de tamanho. Pode validar."
+            },
+            {
+                // CASO 3: Sem Escala / Omissão
+                titulo: "A PREFERÊNCIA DO CONSUMIDOR",
+                e_confiavel: false, // É Fake
+                barras: [
+                    { nome: "NOSSO PRODUTO", valor: "????", tamanho: "95%" },
+                    { nome: "CONCORRENTE",   valor: "????", tamanho: "25%" }
+                ],
+                explicacao: "ALERTA! Gráfico sem números ou escala definida não prova nada. Barras sem valores servem apenas para manipular a opinião visualmente."
+            }
+        ];
+
+        let indiceAtual = 0;
+        let bloqueado = false; // Para não deixar clicar duas vezes
+
+        // --- FUNÇÃO PARA DESENHAR O CASO NA TELA ---
+        function carregarCaso() {
+            bloqueado = false;
+            const caso = casos[indiceAtual];
+            
+            // Atualiza textos
+            document.getElementById("contador-casos").innerText = "Caso: " + (indiceAtual + 1) + "/" + casos.length;
+            document.getElementById("titulo-grafico").innerText = caso.titulo;
+            document.getElementById("msg-sigma").innerText = "Analise o gráfico acima. Ele representa a realidade ou está distorcido?";
+            
+            // Esconde botão de próximo e mostra opções
+            document.getElementById("btn-proximo").style.display = "none";
+            document.getElementById("controles").style.display = "flex";
+
+            // Limpa barras antigas
+            const container = document.getElementById("area-barras");
+            container.innerHTML = "";
+
+            // Cria as barras novas
+            caso.barras.forEach(dado => {
+                let div = document.createElement("div");
+                div.className = "barra";
+                // Começa com largura 0 para animar
+                div.style.width = "0%"; 
+                div.innerText = dado.nome + " (" + dado.valor + ")";
+                container.appendChild(div);
+
+                // Pequeno delay para a animação funcionar
+                setTimeout(() => {
+                    div.style.width = dado.tamanho;
+                }, 100);
+            });
+        }
+
+        // --- LÓGICA DO JOGO ---
+        function analisar(alunoDisseQueEConfiavel) {
+            if (bloqueado) return;
+            bloqueado = true;
+
+            const caso = casos[indiceAtual];
+            const acertou = (alunoDisseQueEConfiavel === caso.e_confiavel);
+            const sigma = document.getElementById("msg-sigma");
+
+            if (acertou) {
+                // Feedback Positivo
+                sigma.innerHTML = "<span style='color:#ffff00'>EXCELENTE TRABALHO!</span><br>" + caso.explicacao;
+            } else {
+                // Feedback de Erro (Pedagógico)
+                sigma.innerHTML = "<span style='color:#ff3333'>ANÁLISE INCORRETA.</span><br>Agente, preste atenção: " + caso.explicacao;
+            }
+
+            // Prepara para o próximo nível
+            document.getElementById("controles").style.display = "none";
+            document.getElementById("btn-proximo").style.display = "block";
+
+            // Se for o último caso, muda o texto do botão
+            if (indiceAtual === casos.length - 1) {
+                document.getElementById("btn-proximo").innerText = "FINALIZAR TREINAMENTO";
+            }
+        }
+
+        function proximoCaso() {
+            indiceAtual++;
+            if (indiceAtual < casos.length) {
+                carregarCaso();
+           } else {
+                // FIM DO JOGO (Nesta fase)
+                document.getElementById("dispositivo-analise").innerHTML = "<h2>🎉 MÓDULO CONCLUÍDO</h2><p>Iniciando Sincronização de Interface...</p>";
+                
+                // --- CÓDIGO DE REDIRECIONAMENTO ---
+                setTimeout(function() {
+                    window.location.href = "missao_fase3.html";
+                }, 3000);
+                // ----------------------------------
+            }
+        }
+
+        // Inicia o primeiro caso
+        carregarCaso();
+
+    </script>
+</body>
+</html>
