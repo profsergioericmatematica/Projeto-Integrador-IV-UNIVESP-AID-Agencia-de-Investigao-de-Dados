@@ -101,6 +101,7 @@ O jogo utiliza o conceito de **Andaimagem** (*Scaffolding*). O sistema não apen
 | **Andaime Visual** | **Fase das Pastas** | Quando uma pasta vazia é removida da tela, o aluno recebe apoio visual para compreender que o denominador da fração mudou (ex: de 5 para 4). O conceito abstrato torna-se concreto e visível. |
 | **Andaime de Restrição** | **Bloqueio de Erro** | Na Fase 1, se o aluno erra, o jogo trava momentaneamente e obriga a resposta de uma pergunta teórica ("A chance mudou ou é igual?"). Isso impede a "tentativa e erro" cega e força a reflexão cognitiva. |
 
+
 ---
 
 ## 📞 Contato e Suporte
