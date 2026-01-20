@@ -1,4 +1,93 @@
 document.addEventListener("DOMContentLoaded", function() {
+    
+    // ==================================================================
+    // PARTE 1: EFEITO MATRIX RAIN (CHUVA DIGITAL)
+    // ==================================================================
+    
+    // 1. Criar o elemento Canvas
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // 2. Estilizar o Canvas para ficar no fundo
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.zIndex = '-10'; // Coloca atrás de tudo
+    canvas.style.opacity = '0.8'; // Um pouco transparente para não atrapalhar a leitura
+    canvas.style.pointerEvents = 'none'; // Garante que não bloqueie cliques no jogo
+    
+    // Adiciona ao corpo da página antes de qualquer outra coisa
+    document.body.insertBefore(canvas, document.body.firstChild);
+
+    // 3. Configurar dimensões
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    // 4. Configurar os caracteres da chuva
+    // Usaremos Katakana (japonês) + Números + Letras maiúsculas para o visual clássico
+    const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレゲゼデベペオォコソトノホモヨョロゴゾドボポヴッン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const charArray = chars.split('');
+    const fontSize = 14;
+    let columns = width / fontSize; // Quantidade de colunas baseado na largura
+
+    // 5. Array para controlar a posição vertical (y) de cada gota
+    let drops = [];
+    for (let i = 0; i < columns; i++) {
+        drops[i] = Math.random() * -100; // Começam em alturas diferentes fora da tela
+    }
+
+    // 6. Função de Desenho (O Loop da Animação)
+    function drawMatrix() {
+        // Preenche a tela com preto semi-transparente para criar o efeito de rastro
+        // Quanto menor a opacidade (0.05), mais longo o rastro
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; 
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.fillStyle = '#00ff41'; // Cor Verde Neon do Projeto
+        ctx.font = fontSize + 'px monospace';
+
+        // Loop pelas colunas
+        for (let i = 0; i < drops.length; i++) {
+            // Escolhe um caractere aleatório
+            const text = charArray[Math.floor(Math.random() * charArray.length)];
+            
+            // Desenha o caractere na posição x = i*fontSize, y = drops[i]*fontSize
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            // Move a gota para baixo
+            drops[i]++;
+
+            // Se a gota passou do fim da tela, reseta ela para o topo aleatoriamente
+            // O Math.random() > 0.975 cria a aleatoriedade para não cair tudo junto
+            if (drops[i] * fontSize > height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+        }
+        // Chama o próximo quadro da animação
+        requestAnimationFrame(drawMatrix);
+    }
+
+    // 7. Iniciar a animação
+    drawMatrix();
+
+    // 8. Ajustar se a tela mudar de tamanho (girar o celular)
+    window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        columns = width / fontSize;
+        drops = [];
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.random() * -100;
+        }
+    });
+
+
+    // ==================================================================
+    // PARTE 2: RODAPÉ (O CÓDIGO QUE JÁ TÍNHAMOS)
+    // ==================================================================
+
     // 1. Garante que o Font Awesome está carregado
     if (!document.querySelector('link[href*="font-awesome"]')) {
         var link = document.createElement('link');
@@ -7,13 +96,14 @@ document.addEventListener("DOMContentLoaded", function() {
         document.head.appendChild(link);
     }
 
-    // 2. CSS Redesenhado (Estilo Clean & Integrado)
+    // 2. CSS do Rodapé (Estilo Glassmorphism Hacker)
     var style = document.createElement('style');
     style.innerHTML = `
         /* Container Principal - Fundo degradê suave para integrar com a página */
         .game-footer {
             width: 100%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0, 20, 0, 0.9) 20%, #000 100%);
+            /* Fundo semi-transparente para a chuva Matrix aparecer por trás */
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0, 10, 0, 0.8) 50%, #000 100%);
             border-top: 1px solid rgba(0, 255, 65, 0.3); /* Linha muito sutil */
             padding: 40px 20px 20px;
             margin-top: auto; /* Empurra para o final se usar flex */
@@ -22,6 +112,7 @@ document.addEventListener("DOMContentLoaded", function() {
             text-align: center;
             position: relative;
             box-sizing: border-box;
+            z-index: 10; /* Garante que o rodapé fique SOBRE a chuva */
         }
 
         .footer-content {
@@ -140,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function() {
     `;
     document.head.appendChild(style);
 
-    // 3. Estrutura HTML Limpa
+    // 3. Estrutura HTML Limpa do Rodapé
     var footerHTML = `
         <div class="footer-content">
             <div class="footer-title">
@@ -187,7 +278,7 @@ document.addEventListener("DOMContentLoaded", function() {
         </div>
     `;
 
-    // 4. Inserção no DOM
+    // 4. Inserção do Rodapé no DOM
     var footerElement = document.createElement('footer');
     footerElement.className = 'game-footer';
     footerElement.innerHTML = footerHTML;
