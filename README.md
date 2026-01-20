@@ -1,4 +1,3 @@
-
 # 🕵️‍♂️ A.I.D. - Agência de Investigação de Dados
 
 > Projeto Integrador IV | Licenciatura em Matemática | UNIVESP | Produto Educacional (REA)
@@ -23,6 +22,53 @@ O objetivo é promover o **Letramento Estatístico** e a compreensão de **Proba
 
 ---
 
+## 🛠️ Tecnologias Utilizadas
+
+| Tecnologia | Uso no Projeto |
+|------------|----------------|
+| HTML5 | Estrutura das páginas |
+| CSS3 | Estilização com tema hacker |
+| JavaScript (ES6+) | Lógica do jogo e interatividade |
+| Font Awesome 6.4.0 | Ícones |
+| Google Fonts | Fonte "Courier New" |
+
+---
+
+## 🏗️ Estrutura do Projeto
+
+```bash
+Projeto-AID/
+├── index.html              # Menu principal
+├── missao_1a.html          # Fase 1A: Cofre Digital (Eventos Independentes)
+├── missao_1b.html          # Fase 1B: Servidor (Eventos Dependentes)
+├── missao_2.html           # Fase 2: Análise de Gráficos (Fake News)
+├── missao_fase3.html       # Fase 3: Sincronização de Dados
+├── missao_fase4.html       # Fase 4: Cálculo de Média/Moda/Mediana
+├── footer.js               # Efeitos visuais (Matrix Rain) e rodapé
+└── README.md               # Documentação
+```
+
+---
+
+## 🚀 Como Executar
+
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/profsergioericmatematica/Projeto-Integrador-IV-UNIVESP-AID-Agencia-de-Investigao-de-Dados.git
+   ```
+
+2. **Navegue até a pasta:**
+   ```bash
+   cd Projeto-Integrador-IV-UNIVESP-AID-Agencia-de-Investigao-de-Dados
+   ```
+
+3. **Execute com um servidor local:**
+   - Método 1: Abra `index.html` diretamente no navegador
+   - Método 2: Use extensão "Live Server" no VS Code
+   - Método 3: Python: `python -m http.server 8000`
+
+---
+
 ## 🕵️‍♂️ As Missões (Fases do Jogo)
 
 O jogo é dividido em 4 missões modulares, cada uma focada em uma habilidade específica da BNCC:
@@ -42,24 +88,6 @@ O jogo é dividido em 4 missões modulares, cada uma focada em uma habilidade es
 ### 🏆 Missão 4: A Decodificação Final (Estatística Aplicada)
 - O desafio final para neutralizar o sistema vilão.
 - **Desafio:** Calcular manualmente as Medidas de Tendência Central (**Média, Moda e Mediana**) para quebrar a criptografia final.
-
----
-
-## 🏗️ Estrutura do Projeto
-
-O projeto foi desenvolvido focando em **Acessibilidade** e **Baixa Latência**, não dependendo de frameworks pesados para rodar em qualquer dispositivo escolar.
-
-```bash
-Projeto-AID/
-├── index.html          # Menu Principal (Login da Agência)
-├── missao_1a.html      # Fase 1: Probabilidade Independente
-├── missao_1b.html      # Fase 1: Probabilidade Dependente
-├── missao_2.html       # Fase 2: Análise de Gráficos (Fake News)
-├── missao_fase3.html   # Fase 3: Escolha de Gráficos
-├── missao_fase4.html   # Fase 4: Cálculo de Média/Moda/Mediana
-└── README.md           # Documentação
-
-```
 
 ---
 
@@ -107,6 +135,26 @@ O projeto atende às competências específicas de Matemática do 9º Ano:
 
 ---
 
+## 🧪 Testes e Validação
+
+O projeto passou por:
+- ✅ Testes de funcionalidade em diferentes navegadores
+- ✅ Validação HTML/CSS
+- ✅ Testes de responsividade (mobile/desktop)
+- ✅ Validação pedagógica com professores
+- ✅ Teste com público-alvo (alunos do 9º ano)
+
+---
+
+## 📚 Referências
+
+- BNCC (Base Nacional Comum Curricular) - Matemática
+- PPC (Projeto Pedagógico do Curso) - UNIVESP
+- ZABALA, A. A prática educativa: como ensinar. Porto Alegre: Artmed, 1998.
+- PERRENOUD, P. Dez novas competências para ensinar. Porto Alegre: Artmed, 2000.
+
+---
+
 ## 👥 Equipe de Desenvolvimento
 
 **Projeto Integrador IV - Licenciatura em Matemática - UNIVESP**
@@ -130,26 +178,21 @@ O projeto atende às competências específicas de Matemática do 9º Ano:
 * **Repositório:** [Código Fonte no GitHub](https://github.com/profsergioericmatematica/Projeto-Integrador-IV-UNIVESP-AID-Agencia-de-Investigao-de-Dados)
 * **Instituição:** [UNIVESP](https://www.univesp.br)
 
+---
+
 ## 📝 Licença
 
-Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](https://www.google.com/search?q=LICENSE) para detalhes.
+Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](LICENSE) para detalhes.
 
 ---
 
 <p align="center">
-Desenvolvido com 💙, 🔢 e 🎮 para a educação matemática brasileira
-
-
-
-
-
-<em>"A matemática é a linguagem com a qual Deus escreveu o universo." - Galileu Galilei</em>
+  Desenvolvido com 💙, 🔢 e 🎮 para a educação matemática brasileira
 </p>
+
+*"A matemática é a linguagem com a qual Deus escreveu o universo."*  
+*— Galileu Galilei*
 
 ---
 
-*Última atualização: Janeiro 2026*
-
-```
-
-```
+**Última atualização: Janeiro 2026**
