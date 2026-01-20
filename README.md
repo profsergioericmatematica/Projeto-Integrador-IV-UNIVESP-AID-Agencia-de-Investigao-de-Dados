@@ -193,5 +193,6 @@ Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](L
 *"A matemática é a linguagem com a qual Deus escreveu o universo." — Galileu Galilei*
 </p>
 ---
-
+<p align="center">
 **Última atualização: Janeiro 2026**
+</p>
