@@ -137,6 +137,12 @@
 </head>
 <body>
 
+        <script>
+            // CRONÔMETRO DE FASE
+            // Salva a hora que a página carregou
+            const inicioFase = Date.now();
+        </script>
+
     <div id="container-jogo">
         <div id="info-topo">
             <span>🔒 V2.0</span>
@@ -185,6 +191,27 @@
             document.getElementById("contador-tentativas").innerText = "Tentativas: " + totalTentativas;
         }
 
+        // FUNÇÃO DE LOG INTELIGENTE
+        function registrarLog(texto, tipo = "info") {
+            // Calcula tempo decorrido desde que a página abriu
+            let tempoDecorrido = ((Date.now() - inicioFase) / 1000).toFixed(1); // Segundos
+
+            // Formata a linha do log
+            let prefixo = "[" + document.title.replace("A.I.D. - ", "") + " | " + tempoDecorrido + "s] ";
+            let linha = prefixo + texto;
+
+            // Salva no relatório
+            let logAtual = localStorage.getItem('AID_Relatorio') || "";
+            localStorage.setItem('AID_Relatorio', logAtual + linha + "\n");
+
+            // Se for erro, incrementa o contador global
+            if (tipo === "erro") {
+                let totalErros = parseInt(localStorage.getItem('AID_TotalErros') || 0);
+                localStorage.setItem('AID_TotalErros', totalErros + 1);
+            }
+        }
+
+
         function verificarChute(numeroEscolhido) {
             totalTentativas++;
             atualizarContador();
@@ -193,6 +220,7 @@
             var sigma = document.getElementById("mensagem-sigma");
 
             if (numeroEscolhido === numeroSecreto) {
+                registrarLog("[MISSÃO 1A] Sucesso! Senha quebrada (" + numeroSecreto + ") após " + totalTentativas + " tentativas.","erro");
                 // --- VITÓRIA ---
                 tela.innerHTML = "ACESSO PERMITIDO!<br><small style='font-size:16px'>Senha: " + numeroSecreto + "</small>";
                 tela.style.backgroundColor = "#00ff41"; 
@@ -201,6 +229,7 @@
                 if (totalTentativas === 1) {
                     sigma.innerText = "INCRÍVEL! De primeira! Clique abaixo para continuar.";
                 } else {
+                    registrarLog("[MISSÃO 1A] Falha. Tentativa incorreta: " + numeroEscolhido, "erro");
                     sigma.innerText = "Muito bem, Agente! Hackeado em " + totalTentativas + " tentativas.";
                 }
 

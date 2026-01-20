@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A.I.D. - Fraudes</title>
+    <title>A.I.D. - Fraudes Gráficas</title>
     <style>
         body {
             background-color: #0d0d0d;
@@ -21,7 +21,7 @@
 
         #dispositivo-analise {
             width: 100%;
-            max-width: 700px; /* Adaptável */
+            max-width: 700px;
             border: 2px solid #00ff41;
             padding: 20px;
             border-radius: 10px;
@@ -30,111 +30,271 @@
             text-align: center;
         }
 
-        h2 { border-bottom: 1px dashed #00ff41; padding-bottom: 10px; margin-top: 0; font-size: 20px; }
+        h2 { 
+            border-bottom: 1px dashed #00ff41; 
+            padding-bottom: 10px; 
+            margin-top: 0; 
+            font-size: 20px; 
+        }
 
         #painel-grafico {
             background-color: #fff;
             color: #000;
-            padding: 15px;
+            padding: 20px;
             margin: 20px 0;
             border-radius: 5px;
-            min-height: 200px;
+            min-height: 250px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             text-align: left;
+            position: relative;
         }
         
-        #titulo-grafico { font-weight: bold; font-size: 16px; margin-bottom: 20px; color: #d00; }
+        #titulo-grafico { 
+            font-weight: bold; 
+            font-size: 18px; 
+            margin-bottom: 15px; 
+            color: #d00; 
+            text-align: center;
+        }
 
-        .container-barras {
+        .container-grafico {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
+            align-items: flex-end;
+            justify-content: center;
+            height: 180px;
+            gap: 30px;
+            padding: 10px;
             border-left: 2px solid #333;
             border-bottom: 2px solid #333;
-            padding: 10px;
+            position: relative;
+        }
+
+        .barra-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: flex-end;
         }
 
         .barra {
-            height: 25px;
+            width: 50px;
             background-color: #0055aa;
             color: #fff;
             display: flex;
-            align-items: center;
-            padding-left: 5px;
+            align-items: flex-start;
+            justify-content: center;
             font-size: 12px;
-            white-space: nowrap;
-            transition: width 1s;
-            width: 0%;
+            padding-top: 5px;
+            transition: height 1s;
+            height: 0%;
+            position: relative;
+            border-radius: 3px 3px 0 0;
         }
 
-        #controles { display: flex; justify-content: center; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+        .barra-valor {
+            margin-top: 5px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .barra-rotulo {
+            margin-top: 5px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .eixo-y {
+            position: absolute;
+            left: -25px;
+            top: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #666;
+            text-align: right;
+            width: 20px;
+        }
+
+        #dica-box {
+            margin-top: 10px;
+            padding: 8px;
+            background-color: #002200;
+            border: 1px dashed #00aa00;
+            border-radius: 5px;
+            font-size: 12px;
+            color: #ccffcc;
+            text-align: center;
+        }
+
+        #controles { 
+            display: flex; 
+            justify-content: center; 
+            gap: 10px; 
+            margin-top: 20px; 
+            flex-wrap: wrap; 
+        }
 
         .btn-acao {
-            padding: 15px; font-size: 16px; font-weight: bold; cursor: pointer;
-            border: 2px solid #fff; border-radius: 5px; flex: 1; min-width: 120px;
+            padding: 15px; 
+            font-size: 16px; 
+            font-weight: bold; 
+            cursor: pointer;
+            border: 2px solid #fff; 
+            border-radius: 5px; 
+            flex: 1; 
+            min-width: 120px;
+            transition: all 0.3s;
         }
 
-        #btn-validar { background-color: #003300; color: #00ff41; border-color: #00ff41; }
-        #btn-denunciar { background-color: #330000; color: #ff3333; border-color: #ff3333; }
+        #btn-validar { 
+            background-color: #003300; 
+            color: #00ff41; 
+            border-color: #00ff41; 
+        }
+        
+        #btn-validar:hover { 
+            background-color: #005500; 
+        }
+        
+        #btn-denunciar { 
+            background-color: #330000; 
+            color: #ff3333; 
+            border-color: #ff3333; 
+        }
+        
+        #btn-denunciar:hover { 
+            background-color: #550000; 
+        }
         
         #btn-proximo {
-            display: none; margin-top: 15px; width: 100%; padding: 15px;
-            background: #fff; color: #000; font-weight: bold; cursor: pointer; border: none;
+            display: none; 
+            margin-top: 15px; 
+            width: 100%; 
+            padding: 15px;
+            background: #fff; 
+            color: #000; 
+            font-weight: bold; 
+            cursor: pointer; 
+            border: none;
+            border-radius: 5px;
         }
 
-        #agente-box { margin-top: 20px; border-top: 1px dashed #00ff41; padding-top: 10px; color: #ccffcc; font-size: 14px;}
+        #btn-proximo:hover {
+            background: #e0e0e0;
+        }
+
+        #agente-box { 
+            margin-top: 20px; 
+            border-top: 1px dashed #00ff41; 
+            padding-top: 10px; 
+            color: #ccffcc; 
+            font-size: 14px;
+        }
+
+        .alerta-manipulacao {
+            position: absolute;
+            background-color: rgba(255, 0, 0, 0.1);
+            border: 1px dashed red;
+            padding: 5px;
+            font-size: 10px;
+            color: #d00;
+            border-radius: 3px;
+        }
+
+        .explicacao-erro {
+            color: #ff3333;
+            font-weight: bold;
+        }
+
+        .explicacao-acerto {
+            color: #00aa00;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
+    <script>
+        // CRONÔMETRO DE FASE
+        const inicioFase = Date.now();
+    </script>
+
     <div id="dispositivo-analise">
         <div style="display:flex; justify-content:space-between; font-size:12px;">
-            <span>👁️ DETECTOR V1.0</span>
+            <span>👁️ DETECTOR V2.0</span>
             <span id="contador-casos">Caso: 1/3</span>
         </div>
         
-        <h2>ANALISE A MÍDIA</h2>
+        <h2>ANÁLISE DE GRÁFICOS MANIPULADOS</h2>
 
         <div id="painel-grafico">
             <div id="titulo-grafico">Carregando...</div>
-            <div class="container-barras" id="area-barras"></div>
-            <div style="font-size:10px; color:#666; margin-top:5px;">Fonte: Dados Não Verificados</div>
+            
+            <div class="container-grafico" id="area-grafico">
+                <!-- Aqui será inserido o gráfico dinamicamente -->
+            </div>
+            
+            <div id="dica-box">
+                <strong>DICA:</strong> Verifique se a escala do gráfico começa em ZERO e se os valores correspondem às proporções visuais.
+            </div>
         </div>
 
         <div id="agente-box">
             <strong>🕵️ AGENTE SIGMA:</strong>
-            <span id="msg-sigma">Este gráfico é CONFIÁVEL ou MANIPULADO?</span>
+            <span id="msg-sigma">Analise se este gráfico é CONFIÁVEL ou MANIPULADO.</span>
         </div>
 
         <div id="controles">
-            <button id="btn-validar" class="btn-acao" onclick="analisar(true)">✅ VALIDAR</button>
-            <button id="btn-denunciar" class="btn-acao" onclick="analisar(false)">🚫 DENUNCIAR</button>
+            <button id="btn-validar" class="btn-acao" onclick="analisar(true)">✅ CONFIÁVEL</button>
+            <button id="btn-denunciar" class="btn-acao" onclick="analisar(false)">🚫 MANIPULADO</button>
         </div>
         
         <button id="btn-proximo" onclick="proximoCaso()">PRÓXIMO CASO >></button>
     </div>
 
     <script>
+        // NOVOS CASOS - Mais claros e educativos
         const casos = [
             {
-                titulo: "URGENTE: LUCRO DA RIVAL DISPARA!",
+                titulo: "CRESCIMENTO DE VENDAS - EMPRESA RIVAL",
                 e_confiavel: false,
-                barras: [ { nome: "JAN", valor: "R$ 950", tamanho: "23%" }, { nome: "FEV", valor: "R$ 980", tamanho: "100%" } ],
-                explicacao: "FRAUDE! Diferença pequena nos números (3%), mas visual gigante. Eixo Truncado."
+                // Gráfico manipulado: eixo Y não começa em zero (começa em 90)
+                valores: [
+                    { nome: "JAN", valor: "R$ 92", valorNumerico: 92, tamanhoCorreto: "20%" },
+                    { nome: "FEV", valor: "R$ 98", valorNumerico: 98, tamanhoCorreto: "80%" }
+                ],
+                explicacao: "<span class='explicacao-erro'>MANIPULADO!</span> O gráfico não começa em ZERO. Diferença real: apenas 6.5%, mas visualmente parece ser 4x maior.",
+                dica: "Observe que a barra de FEVEREIRO parece ser 4x maior que a de JANEIRO, mas os valores são R$92 vs R$98 (apenas 6.5% de diferença).",
+                manipulacao: "eixo_truncado"
             },
             {
-                titulo: "Vendas Setor Norte",
+                titulo: "CRESCIMENTO DE VENDAS - NOSSA EMPRESA",
                 e_confiavel: true,
-                barras: [ { nome: "2024", valor: "100 un.", tamanho: "50%" }, { nome: "2025", valor: "200 un.", tamanho: "100%" } ],
-                explicacao: "CORRETO. Dobrou o valor, dobrou o tamanho."
+                // Gráfico correto: começa em zero
+                valores: [
+                    { nome: "2024", valor: "100 un.", valorNumerico: 100, tamanhoCorreto: "50%" },
+                    { nome: "2025", valor: "200 un.", valorNumerico: 200, tamanhoCorreto: "100%" }
+                ],
+                explicacao: "<span class='explicacao-acerto'>CONFIÁVEL!</span> O gráfico começa em ZERO e as proporções visuais correspondem aos valores reais.",
+                dica: "As vendas dobraram de 100 para 200 unidades, e visualmente a barra de 2025 é exatamente o dobro da barra de 2024.",
+                manipulacao: "nenhuma"
             },
             {
-                titulo: "PREFERÊNCIA DO CONSUMIDOR",
+                titulo: "PREFERÊNCIA DO CONSUMIDOR - PESQUISA SEM DADOS",
                 e_confiavel: false,
-                barras: [ { nome: "NÓS", valor: "????", tamanho: "95%" }, { nome: "ELES", valor: "????", tamanho: "25%" } ],
-                explicacao: "ALERTA! Gráfico sem números não prova nada."
+                // Gráfico sem valores numéricos
+                valores: [
+                    { nome: "PRODUTO A", valor: "??%", valorNumerico: 0, tamanhoCorreto: "85%" },
+                    { nome: "PRODUTO B", valor: "??%", valorNumerico: 0, tamanhoCorreto: "15%" }
+                ],
+                explicacao: "<span class='explicacao-erro'>MANIPULADO!</span> Gráfico sem valores numéricos não tem credibilidade. Não é possível verificar a veracidade.",
+                dica: "Um gráfico confiável sempre mostra os valores exatos ou percentuais. Gráficos com '??' ou sem valores são suspeitos.",
+                manipulacao: "valores_ausentes"
             }
         ];
 
@@ -144,32 +304,107 @@
         function carregarCaso() {
             bloqueado = false;
             const caso = casos[indiceAtual];
+            
             document.getElementById("contador-casos").innerText = "Caso: " + (indiceAtual + 1) + "/" + casos.length;
             document.getElementById("titulo-grafico").innerText = caso.titulo;
-            document.getElementById("msg-sigma").innerText = "Analise a escala e proporções.";
+            document.getElementById("msg-sigma").innerHTML = caso.dica;
             document.getElementById("btn-proximo").style.display = "none";
             document.getElementById("controles").style.display = "flex";
+            
+            // Atualizar dica específica
+            document.getElementById("dica-box").innerHTML = `<strong>DICA:</strong> ${caso.dica}`;
 
-            const container = document.getElementById("area-barras");
+            const container = document.getElementById("area-grafico");
             container.innerHTML = "";
-            caso.barras.forEach(dado => {
-                let div = document.createElement("div");
-                div.className = "barra";
-                div.style.width = "0%"; 
-                div.innerText = dado.nome + " (" + dado.valor + ")";
-                container.appendChild(div);
-                setTimeout(() => { div.style.width = dado.tamanho; }, 100);
+            
+            // Adicionar eixo Y
+            const eixoY = document.createElement("div");
+            eixoY.className = "eixo-y";
+            
+            // Para gráficos truncados (manipulados), mostrar escala enganosa
+            if (caso.manipulacao === "eixo_truncado") {
+                eixoY.innerHTML = `
+                    <div>100%</div>
+                    <div>95%</div>
+                    <div>90%</div>
+                    <div>85%</div>
+                    <div>80%</div>
+                `;
+                
+                // Adicionar alerta visual sobre manipulação
+                const alerta = document.createElement("div");
+                alerta.className = "alerta-manipulacao";
+                alerta.style.top = "10px";
+                alerta.style.right = "10px";
+                alerta.innerText = "EIXO Y TRUNCADO";
+                container.appendChild(alerta);
+            } else {
+                eixoY.innerHTML = `
+                    <div>100%</div>
+                    <div>75%</div>
+                    <div>50%</div>
+                    <div>25%</div>
+                    <div>0%</div>
+                `;
+            }
+            
+            container.appendChild(eixoY);
+            
+            // Criar barras
+            caso.valores.forEach(dado => {
+                let barraContainer = document.createElement("div");
+                barraContainer.className = "barra-container";
+                
+                let barra = document.createElement("div");
+                barra.className = "barra";
+                barra.style.height = "0%";
+                barra.innerText = dado.valor;
+                
+                let rotulo = document.createElement("div");
+                rotulo.className = "barra-rotulo";
+                rotulo.innerText = dado.nome;
+                
+                barraContainer.appendChild(barra);
+                barraContainer.appendChild(rotulo);
+                container.appendChild(barraContainer);
+                
+                // Animar a barra após um pequeno delay
+                setTimeout(() => { 
+                    barra.style.height = dado.tamanhoCorreto; 
+                }, 200);
             });
+        }
+
+        // FUNÇÃO DE LOG INTELIGENTE
+        function registrarLog(texto, tipo = "info") {
+            let tempoDecorrido = ((Date.now() - inicioFase) / 1000).toFixed(1);
+            let prefixo = "[" + document.title.replace("A.I.D. - ", "") + " | " + tempoDecorrido + "s] ";
+            let linha = prefixo + texto;
+
+            let logAtual = localStorage.getItem('AID_Relatorio') || "";
+            localStorage.setItem('AID_Relatorio', logAtual + linha + "\n");
+
+            if (tipo === "erro") {
+                let totalErros = parseInt(localStorage.getItem('AID_TotalErros') || 0);
+                localStorage.setItem('AID_TotalErros', totalErros + 1);
+            }
         }
 
         function analisar(escolha) {
             if (bloqueado) return;
             bloqueado = true;
+            
             const caso = casos[indiceAtual];
             const acertou = (escolha === caso.e_confiavel);
             const sigma = document.getElementById("msg-sigma");
 
-            sigma.innerHTML = acertou ? "<span style='color:#ffff00'>EXCELENTE!</span> " + caso.explicacao : "<span style='color:#ff3333'>ERRO.</span> " + caso.explicacao;
+            if (acertou) {
+                sigma.innerHTML = "<span style='color:#00ff41'>✓ ANÁLISE CORRETA!</span><br>" + caso.explicacao;
+                registrarLog("Análise Correta no Caso " + (indiceAtual + 1) + " - " + caso.titulo);
+            } else {
+                sigma.innerHTML = "<span style='color:#ff3333'>✗ ANÁLISE INCORRETA!</span><br>" + caso.explicacao;
+                registrarLog("[MISSÃO 2] Erro de Análise no Caso " + (indiceAtual + 1) + " (" + caso.titulo + ")", "erro");
+            }
 
             document.getElementById("controles").style.display = "none";
             let btnProx = document.getElementById("btn-proximo");
@@ -191,9 +426,10 @@
                 window.location.href = "missao_fase3.html";
             }
         }
+        
+        // Iniciar
         carregarCaso();
     </script>
-<script src="footer.js"></script>
 
 </body>
 </html>

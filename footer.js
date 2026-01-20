@@ -26,8 +26,9 @@ document.addEventListener("DOMContentLoaded", function() {
     let height = canvas.height = window.innerHeight;
 
     // 4. Configurar os caracteres da chuva
-    // Usaremos Katakana (japonês) + Números + Letras maiúsculas para o visual clássico
-    const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレゲゼデベペオォコソトノホモヨョロゴゾドボポヴッン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    // Substitua a linha antiga 'const chars = ...' por esta:
+    const chars = '0123456789∑∏∫√∞∂∇ΔΘΛΞΠΣΦΨΩαβγδεζηθλμξπρστφχψω∀∃∈∉⊂⊃∪∩∧∨¬⇒⇔≈≠≤≥±÷×';
+
     const charArray = chars.split('');
     const fontSize = 14;
     let columns = width / fontSize; // Quantidade de colunas baseado na largura

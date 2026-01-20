@@ -136,7 +136,7 @@
         
         <button class="btn-menu" onclick="abrirModal('modal-tutorial')">🎮 COMO JOGAR</button>
         
-        <a href="missao_1a.html" class="btn-menu btn-start">🚀 INICIAR OPERAÇÃO</a>
+        <a href="#" onclick="iniciarMissao()" class="btn-menu btn-start">🚀 INICIAR OPERAÇÃO</a>
     </div>
 
     <div id="modal-revisao" class="modal-overlay">
@@ -176,12 +176,56 @@
 
 
     <script>
+        function iniciarMissao() {
+            // 1. Limpa dados antigos
+            localStorage.removeItem('AID_Relatorio');
+            
+            // 2. Define o Início Global e Zera Erros
+            localStorage.setItem('AID_GlobalStart', Date.now());
+            localStorage.setItem('AID_TotalErros', 0);
+
+            // 3. Cria o cabeçalho do relatório
+            let dataAgora = new Date().toLocaleString();
+            let cabecalho = "=== RELATÓRIO DE MISSÃO A.I.D. (Modo Analítico) ===\n";
+            cabecalho += "ID do Agente/Sessão: " + Date.now().toString().slice(-6) + "\n"; // ID único curto
+            cabecalho += "Início da Operação: " + dataAgora + "\n";
+            cabecalho += "-----------------------------------\n";
+            
+            localStorage.setItem('AID_Relatorio', cabecalho);
+
+            // 4. Vai para a primeira fase
+            window.location.href = "missao_1a.html";
+        }
+        
+       
         function abrirModal(id) {
             document.getElementById(id).style.display = 'flex';
         }
         function fecharModal(id) {
             document.getElementById(id).style.display = 'none';
         }
+
+
+        // FUNÇÃO DE LOG INTELIGENTE
+        function registrarLog(texto, tipo = "info") {
+            // Calcula tempo decorrido desde que a página abriu
+            let tempoDecorrido = ((Date.now() - inicioFase) / 1000).toFixed(1); // Segundos
+
+            // Formata a linha do log
+            let prefixo = "[" + document.title.replace("A.I.D. - ", "") + " | " + tempoDecorrido + "s] ";
+            let linha = prefixo + texto;
+
+            // Salva no relatório
+            let logAtual = localStorage.getItem('AID_Relatorio') || "";
+            localStorage.setItem('AID_Relatorio', logAtual + linha + "\n");
+
+            // Se for erro, incrementa o contador global
+            if (tipo === "erro") {
+                let totalErros = parseInt(localStorage.getItem('AID_TotalErros') || 0);
+                localStorage.setItem('AID_TotalErros', totalErros + 1);
+            }
+        }
+
     </script>
     <script src="footer.js"></script>
 

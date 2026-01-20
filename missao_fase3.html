@@ -77,6 +77,13 @@
     </style>
 </head>
 <body>
+  
+    <script>
+        // CRONÔMETRO DE FASE
+        // Salva a hora que a página carregou
+        const inicioFase = Date.now();
+    </script>
+
 
     <div id="console-missao">
         <h2>🔄 SINCRONIZAÇÃO DE DADOS</h2>
@@ -153,7 +160,7 @@
             document.getElementById('msg-sigma').innerText = "Agora escolha o gráfico correspondente.";
         }
 
-        function selecionarGrafico(elementoGrafico) {
+function selecionarGrafico(elementoGrafico) {
             if (!dadoSelecionado) {
                 document.getElementById('msg-sigma').innerText = "⚠️ Clique num texto primeiro!";
                 return;
@@ -162,6 +169,7 @@
             let tipoGrafico = elementoGrafico.getAttribute('data-tipo');
 
             if (tipoDado === tipoGrafico) {
+                // --- ACERTO ---
                 acertos++;
                 dadoSelecionado.classList.remove('selecionado');
                 dadoSelecionado.classList.add('resolvido');
@@ -169,20 +177,67 @@
                 
                 document.getElementById('msg-sigma').innerText = "Sincronização correta!";
                 document.getElementById('msg-sigma').style.color = "#ffff00";
+                
+                // REGISTRO DE ACERTO (Apenas uma vez)
+                registrarLog("Associação Correta: " + tipoDado);
+
                 dadoSelecionado = null;
 
                 if (acertos === 3) {
                     document.getElementById('msg-sigma').innerHTML = "SISTEMA 100% OPERACIONAL.";
                     document.getElementById('btn-proximo').style.display = "inline-block";
                 }
+
             } else {
-                document.getElementById('msg-sigma').innerText = "Incompatível! Tente outro gráfico.";
+                // --- ERRO ---
+                let sigma = document.getElementById('agente-sigma');
+                
+                // Animação de tremor
+                sigma.classList.remove('erro-anim');
+                void sigma.offsetWidth; 
+                sigma.classList.add('erro-anim');
+
+                // Feedback Visual
+                let msgErro = "Incompatível! ";
+                if (tipoGrafico === 'partes') msgErro += "Pizza é ruim para comparar ou ver tempo. Use Pizza apenas para porcentagens de um total.";
+                if (tipoGrafico === 'tempo') msgErro += "Linha é para continuidade (tempo). Não serve para comparar categorias soltas.";
+                
+                document.getElementById('msg-sigma').innerText = msgErro + " Tente novamente.";
                 document.getElementById('msg-sigma').style.color = "#ff3333";
+
+                // REGISTRO DE ERRO (Apenas uma vez)
+                // Removemos a linha antiga duplicada e deixamos apenas esta:
+                registrarLog("[MISSÃO 3] Erro de Associação: Tentou ligar '" + tipoDado + "' com gráfico de '" + tipoGrafico + "'", "erro");
             }
         }
+
+
+
         function finalizarFase() { window.location.href = "missao_fase4.html"; }
+
+        // FUNÇÃO DE LOG INTELIGENTE
+        function registrarLog(texto, tipo = "info") {
+            // Calcula tempo decorrido desde que a página abriu
+            let tempoDecorrido = ((Date.now() - inicioFase) / 1000).toFixed(1); // Segundos
+
+            // Formata a linha do log
+            let prefixo = "[" + document.title.replace("A.I.D. - ", "") + " | " + tempoDecorrido + "s] ";
+            let linha = prefixo + texto;
+
+            // Salva no relatório
+            let logAtual = localStorage.getItem('AID_Relatorio') || "";
+            localStorage.setItem('AID_Relatorio', logAtual + linha + "\n");
+
+            // Se for erro, incrementa o contador global
+            if (tipo === "erro") {
+                let totalErros = parseInt(localStorage.getItem('AID_TotalErros') || 0);
+                localStorage.setItem('AID_TotalErros', totalErros + 1);
+            }
+        }
+
+
     </script>
-<script src="footer.js"></script>
+    <script src="footer.js"></script>
 
 </body>
 </html>

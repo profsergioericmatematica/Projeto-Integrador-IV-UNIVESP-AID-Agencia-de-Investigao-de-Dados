@@ -65,20 +65,25 @@
             padding: 10px; font-size: 20px; width: 80px; text-align: center;
         }
 
-        /* Botão de Ação Principal */
+        /* Botão de Ação Principal (Desativar) */
         #btn-desativar {
             margin-top: 30px; padding: 15px 30px; font-size: 18px;
             background-color: #003300; color: #fff; border: 2px solid #00ff41;
             cursor: pointer; font-weight: bold; width: 100%; max-width: 400px;
         }
 
-        /* --- NOVOS ESTILOS DE VITÓRIA --- */
-        
+        /* --- ÁREA DE VITÓRIA (Centralizada) --- */
+        #vitoria-container {
+            display: none; /* Escondido inicialmente */
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
         /* Retângulo de Missão Cumprida */
         #box-missao-cumprida {
-            display: none; /* Escondido */
             border: 3px solid #ffff00;
-            background-color: #333300;
+            background-color: rgba(255, 255, 0, 0.1);
             color: #ffff00;
             padding: 20px;
             font-size: 24px;
@@ -87,25 +92,56 @@
             margin: 20px auto;
             border-radius: 10px;
             animation: piscar-borda 1.5s infinite;
-            width: 80%;
+            width: 90%;
+            max-width: 500px;
+            box-sizing: border-box;
         }
 
-        /* Botão Retornar à Base */
-        #btn-retorno {
-            display: none; /* Escondido */
-            background-color: #fff;
-            color: #000;
-            font-weight: bold;
-            border: 2px solid #ffff00;
-            padding: 15px 30px;
-            font-size: 18px;
-            cursor: pointer;
-            margin-top: 15px;
-            width: 100%;
+        /* Estilo unificado para botões de vitória */
+        .btn-vitoria {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 90%;
             max-width: 400px;
+            padding: 15px;
+            margin: 10px auto; /* Centraliza */
+            font-size: 16px;
+            font-weight: bold;
             text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
         }
-        #btn-retorno:hover { background-color: #ffff00; }
+
+        /* Botão 1: Download (Verde Neon Preenchido) */
+        #btn-download {
+            background-color: #003300;
+            border: 2px solid #00ff41;
+            color: #00ff41;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+        }
+        #btn-download:hover {
+            background-color: #00ff41;
+            color: #000;
+            box-shadow: 0 0 25px #00ff41;
+            transform: scale(1.02);
+        }
+
+        /* Botão 2: Retorno (Amarelo Outline) */
+        #btn-retorno {
+            background-color: transparent;
+            border: 2px solid #ffff00;
+            color: #ffff00;
+        }
+        #btn-retorno:hover {
+            background-color: #ffff00;
+            color: #000;
+            box-shadow: 0 0 20px #ffff00;
+            transform: scale(1.02);
+        }
 
         #dica-box { display: none; margin-top: 20px; background-color: #333; padding: 10px; text-align: left; font-size: 12px; color: #fff; }
         .btn-ajuda { background: none; border: none; color: #888; font-size: 12px; margin-top: 10px; text-decoration: underline; width: auto; cursor:pointer;}
@@ -113,9 +149,9 @@
         #agente-sigma { margin-top:20px; color:#ccffcc; border-top:1px solid #333; padding-top:10px; min-height: 40px;}
 
         @keyframes piscar-borda { 
-            0% { box-shadow: 0 0 10px #ffff00; transform: scale(1); } 
-            50% { box-shadow: 0 0 30px #ffff00; transform: scale(1.02); } 
-            100% { box-shadow: 0 0 10px #ffff00; transform: scale(1); } 
+            0% { box-shadow: 0 0 10px rgba(255, 255, 0, 0.3); transform: scale(1); } 
+            50% { box-shadow: 0 0 25px rgba(255, 255, 0, 0.6); transform: scale(1.01); } 
+            100% { box-shadow: 0 0 10px rgba(255, 255, 0, 0.3); transform: scale(1); } 
         }
     </style>
 </head>
@@ -144,8 +180,19 @@
 
         <button id="btn-desativar" onclick="verificarCodigos()">DESATIVAR SISTEMA</button>
         
-        <div id="box-missao-cumprida">🏆 MISSÃO CUMPRIDA 🏆</div>
-        <button id="btn-retorno" onclick="voltarBase()">RETORNANDO À BASE >></button>
+        <div id="vitoria-container">
+            <div id="box-missao-cumprida">
+                🏆 MISSÃO CUMPRIDA 🏆
+            </div>
+            
+            <button id="btn-download" class="btn-vitoria" onclick="baixarRelatorio()">
+                💾 BAIXAR RELATÓRIO DA MISSÃO (.TXT)
+            </button>
+            
+            <button id="btn-retorno" class="btn-vitoria" onclick="voltarBase()">
+                RETORNANDO À BASE >>
+            </button>
+        </div>
         
         <br>
         <button class="btn-ajuda" onclick="toggleAjuda()">Precisa de ajuda com as fórmulas?</button>
@@ -164,7 +211,10 @@
         </div>
     </div>
 
-    <script>
+<script>
+        // --- CRONÔMETRO DE FASE (Inicia ao carregar) ---
+        const inicioFase = Date.now();
+
         const niveis = [
             { nums: [2, 5, 2, 8, 3], media: 4, moda: 2, mediana: 3 },
             { nums: [10, 20, 10, 40, 20, 10, 30], media: 20, moda: 10, mediana: 20 },
@@ -172,6 +222,20 @@
         ];
         const desafio = niveis[Math.floor(Math.random() * niveis.length)];
         document.getElementById("sequencia-numeros").innerText = desafio.nums.join(" - ");
+
+        // --- SISTEMA DE LOG AVANÇADO ---
+        function registrarLog(texto, tipo = "info") {
+            let tempoDecorrido = ((Date.now() - inicioFase) / 1000).toFixed(1);
+            let prefixo = "[MISSÃO FINAL | " + tempoDecorrido + "s] ";
+            
+            let logAtual = localStorage.getItem('AID_Relatorio') || "";
+            localStorage.setItem('AID_Relatorio', logAtual + prefixo + texto + "\n");
+
+            if (tipo === "erro") {
+                let totalErros = parseInt(localStorage.getItem('AID_TotalErros') || 0);
+                localStorage.setItem('AID_TotalErros', totalErros + 1);
+            }
+        }
 
         function verificarCodigos() {
             let m1 = parseFloat(document.getElementById("input-media").value);
@@ -186,31 +250,69 @@
                 document.querySelector("h2").innerText = "SISTEMA NEUTRALIZADO";
                 document.querySelector("h2").style.color = "#ffff00";
                 
-                // Mensagem final do Agente
-                sigma.innerHTML = "<span style='color:#ffff00'>PARABÉNS, AGENTE!</span> Você salvou a agência e dominou a Estatística.";
+                sigma.innerHTML = "<span style='color:#ffff00'>PARABÉNS, AGENTE!</span> Você salvou a agência.";
                 
-                // Esconde inputs e botão antigo
+                // LOG DE SUCESSO FINAL
+                registrarLog("Decodificação Final: SUCESSO.");
+                
+                // GERA O SUMÁRIO ESTATÍSTICO NO LOG
+                gerarSumarioFinal();
+
                 document.querySelector(".inputs-area").style.display = "none";
                 document.getElementById("btn-desativar").style.display = "none";
                 document.querySelector(".btn-ajuda").style.display = "none";
-                
-                // MOSTRA OS NOVOS ELEMENTOS
-                document.getElementById("box-missao-cumprida").style.display = "block";
-                document.getElementById("btn-retorno").style.display = "block";
+                document.getElementById("vitoria-container").style.display = "flex";
 
             } else {
-                // ERRO
+                // --- ERRO DETALHADO (Captura o input do aluno) ---
                 let erros = [];
-                if (m1 !== desafio.media) erros.push("MÉDIA");
-                if (m2 !== desafio.moda) erros.push("MODA");
-                if (m3 !== desafio.mediana) erros.push("MEDIANA");
+                let detalheErro = "";
+
+                if (m1 !== desafio.media) {
+                    erros.push("MÉDIA");
+                    detalheErro += ` | Média: Digitou ${m1} (Esperado: ${desafio.media})`;
+                }
+                if (m2 !== desafio.moda) {
+                    erros.push("MODA");
+                    detalheErro += ` | Moda: Digitou ${m2} (Esperado: ${desafio.moda})`;
+                }
+                if (m3 !== desafio.mediana) {
+                    erros.push("MEDIANA");
+                    detalheErro += ` | Mediana: Digitou ${m3} (Esperado: ${desafio.mediana})`;
+                }
                 
                 sigma.innerHTML = "<span style='color:#ff3333'>ERRO!</span> Incorreto: " + erros.join(", ");
                 
-                // Efeito de tremor
+                // REGISTRA O ERRO COM OS VALORES DIGITADOS
+                registrarLog("[MISSÃO 4] Falha de Cálculo. Inputs: " + detalheErro, "erro");
+
                 painel.style.transform = "translateX(10px)";
                 setTimeout(() => painel.style.transform = "translateX(0)", 100);
             }
+        }
+
+        function gerarSumarioFinal() {
+            let fimJogo = Date.now();
+            let inicioJogo = parseInt(localStorage.getItem('AID_GlobalStart') || fimJogo);
+            let tempoTotalSegundos = ((fimJogo - inicioJogo) / 1000).toFixed(0);
+            
+            // Converte segundos para Minutos:Segundos
+            let minutos = Math.floor(tempoTotalSegundos / 60);
+            let segundos = tempoTotalSegundos % 60;
+            let tempoFormatado = minutos + "m " + segundos + "s";
+
+            let totalErros = localStorage.getItem('AID_TotalErros') || 0;
+
+            let sumario = "\n===================================\n";
+            sumario += "   RESUMO ESTATÍSTICO DA MISSÃO    \n";
+            sumario += "===================================\n";
+            sumario += "TEMPO TOTAL DE JOGO: " + tempoFormatado + "\n";
+            sumario += "TOTAL DE ERROS COMETIDOS: " + totalErros + "\n";
+            sumario += "STATUS FINAL: APROVADO\n";
+            sumario += "===================================";
+
+            let logAtual = localStorage.getItem('AID_Relatorio') || "";
+            localStorage.setItem('AID_Relatorio', logAtual + sumario);
         }
 
         function toggleAjuda() {
@@ -219,10 +321,29 @@
         }
 
         function voltarBase() {
+            localStorage.removeItem('AID_Relatorio');
             window.location.href = "index.html";
         }
-    </script>
-<script src="footer.js"></script>
 
+        function baixarRelatorio() {
+            let relatorioFinal = localStorage.getItem('AID_Relatorio');
+            if (!relatorioFinal) relatorioFinal = "Nenhum dado registrado.";
+
+            let agora = new Date();
+            let nomeArquivo = "Relatorio_AID_" + 
+                          agora.getDate() + "-" + (agora.getMonth()+1) + "_" + 
+                          agora.getHours() + "h" + agora.getMinutes() + ".txt";
+
+            let blob = new Blob([relatorioFinal], { type: "text/plain" });
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = nomeArquivo;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+    
+    <script src="footer.js"></script>
 </body>
 </html>

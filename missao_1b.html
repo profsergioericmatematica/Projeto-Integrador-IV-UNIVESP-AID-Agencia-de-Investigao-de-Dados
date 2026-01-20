@@ -93,6 +93,14 @@
 </head>
 <body>
 
+    
+    <script>
+        // CRONÔMETRO DE FASE
+        // Salva a hora que a página carregou
+        const inicioFase = Date.now();
+    </script>
+
+
     <div id="interface-servidor">
         <h2>📂 SERVIDOR CRIPTOGRAFADO</h2>
         <div id="display-info">
@@ -171,17 +179,41 @@
 
         function responder(resposta) {
             if (resposta === 'mudou') {
+                registrarLog("[MISSÃO 1B] Lógica Correta: Identificou evento dependente.");
                 document.getElementById("display-info").innerHTML = "LÓGICA VALIDADA.";
                 document.getElementById("display-info").style.color = "#00ff41";
                 document.getElementById("fala-sigma").innerHTML = "Correto! Evento Dependente: menos pastas = maior chance.";
                 document.getElementById("area-pergunta").style.display = "none";
                 jogoTravado = false; 
             } else {
+                registrarLog("[MISSÃO 1B] Erro Conceitual: Não percebeu mudança no espaço amostral.","Respondeu que a probabilidade é IGUAL (mas mudou).", "erro");
                 document.getElementById("fala-sigma").innerText = "Errado. Se deletamos um arquivo, o total diminuiu. A fração mudou.";
             }
         }
         function irProximaFase() { window.location.href = "missao_2.html"; }
         desenharPastas();
+
+        // FUNÇÃO DE LOG INTELIGENTE
+        function registrarLog(texto, tipo = "info") {
+            // Calcula tempo decorrido desde que a página abriu
+            let tempoDecorrido = ((Date.now() - inicioFase) / 1000).toFixed(1); // Segundos
+
+            // Formata a linha do log
+            let prefixo = "[" + document.title.replace("A.I.D. - ", "") + " | " + tempoDecorrido + "s] ";
+            let linha = prefixo + texto;
+
+            // Salva no relatório
+            let logAtual = localStorage.getItem('AID_Relatorio') || "";
+            localStorage.setItem('AID_Relatorio', logAtual + linha + "\n");
+
+            // Se for erro, incrementa o contador global
+            if (tipo === "erro") {
+                let totalErros = parseInt(localStorage.getItem('AID_TotalErros') || 0);
+                localStorage.setItem('AID_TotalErros', totalErros + 1);
+            }
+        }
+
+
     </script>
     <script src="footer.js"></script>
 
