@@ -1,10 +1,4 @@
-Analisei o seu rascunho e identifiquei o problema principal: **faltava fechar o bloco de código** na seção "Estrutura do Projeto". Isso fazia com que todo o resto do texto (Licença, Metodologia, BNCC) fosse interpretado pelo GitHub como se fosse "código", quebrando a formatação visual.
 
-Além de corrigir isso, reorganizei levemente os links e reinseri a **Tabela de Integrantes** (que é obrigatória para o Projeto Integrador e havia sumido neste último rascunho).
-
-Aqui está o código **corrigido e completo**. Basta copiar tudo abaixo e colar no seu arquivo `README.md`:
-
-```markdown
 # 🕵️‍♂️ A.I.D. - Agência de Investigação de Dados
 
 > Projeto Integrador IV | Licenciatura em Matemática | UNIVESP | Produto Educacional (REA)
