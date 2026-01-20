@@ -187,14 +187,14 @@ Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](L
 ---
 
 <p align="center">
-**Desenvolvido com 💙, 🔢 e 🎮 para a educação matemática brasileira**
+  <strong>Desenvolvido com 💙, 🔢 e 🎮 para a educação matemática brasileira</strong>
 </p>
 
 <p align="center">
-*"A matemática é a linguagem com a qual Deus escreveu o universo."*  
-*— Galileu Galilei*
+  <em>"A matemática é a linguagem com a qual Deus escreveu o universo."</em><br>
+  <em>— Galileu Galilei</em>
 </p>
 
 <p align="center">
-**Última atualização: Janeiro 2026**
+  <strong>Última atualização: Janeiro 2026</strong>
 </p>
