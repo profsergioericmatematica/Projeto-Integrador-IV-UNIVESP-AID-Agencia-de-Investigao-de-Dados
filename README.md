@@ -192,7 +192,7 @@ Desenvolvido com 💙, 🔢 e 🎮 para a educação matemática brasileira
 <p align="center">
 "A matemática é a linguagem com a qual Deus escreveu o universo." — Galileu Galilei
 </p>
----
+
 <p align="center">
 Última atualização: Janeiro 2026
 </p>
