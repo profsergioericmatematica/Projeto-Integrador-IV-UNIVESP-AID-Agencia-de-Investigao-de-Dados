@@ -3,280 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A.I.D. - Servidor de Arquivos</title>
-
+    <title>A.I.D. - Servidor</title>
     <style>
-        /* --- ESTILO HACKER (Igual à Parte A) --- */
         body {
-            background-color: #0d0d0d; /* Fundo Preto */
-            color: #00ff41; /* Verde Neon */
+            background-color: #0d0d0d;
+            color: #00ff41;
             font-family: 'Courier New', Courier, monospace;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
+            padding: 10px;
+            box-sizing: border-box;
         }
 
         #interface-servidor {
-            width: 650px;
-            border: 2px solid #00ff41; /* Borda Verde */
-            padding: 30px;
+            width: 100%;
+            max-width: 650px; /* Adaptável */
+            border: 2px solid #00ff41;
+            padding: 20px;
             border-radius: 10px;
             text-align: center;
             box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
-            position: relative;
+            box-sizing: border-box;
         }
 
-        h2 { 
-            margin-top: 0; 
-            border-bottom: 1px solid #003b00;
-            padding-bottom: 10px;
-        }
+        h2 { margin-top: 0; border-bottom: 1px solid #003b00; padding-bottom: 10px; font-size: 20px; }
 
         #display-info {
             background-color: #001a00;
             color: #fff;
-            padding: 15px;
+            padding: 10px;
             border: 1px dashed #00ff41;
             margin-bottom: 20px;
-            min-height: 50px;
-            font-size: 18px;
+            font-size: 16px;
         }
 
-        /* Área onde ficam os arquivos */
+        /* Container flexível para pastas no celular */
         #container-pastas {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            min-height: 120px; 
-            margin-top: 30px;
+            flex-wrap: wrap; /* Permite que pastas caiam para linha de baixo */
+            gap: 15px;
+            margin-top: 20px;
         }
 
-        /* O desenho do Arquivo Digital */
         .pasta {
-            width: 80px;
-            height: 100px;
-            background-color: #000; /* Fundo preto */
-            border: 2px solid #00ff41; /* Borda verde */
+            width: 60px; /* Menor para caber no celular */
+            height: 80px;
+            background-color: #000;
+            border: 2px solid #00ff41;
             border-radius: 5px;
             position: relative;
             cursor: pointer;
-            transition: 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
+            font-size: 24px;
             color: #00ff41;
-            box-shadow: 0 0 5px rgba(0, 255, 65, 0.2);
         }
-
-        /* A "aba" do arquivo digital */
         .pasta::before {
-            content: '';
-            position: absolute;
-            top: -8px;
-            left: -2px; /* Ajuste fino para alinhar a borda */
-            width: 30px;
-            height: 8px;
-            background-color: #000;
-            border: 2px solid #00ff41;
-            border-bottom: none;
-            border-radius: 4px 4px 0 0;
+            content: ''; position: absolute; top: -6px; left: -2px;
+            width: 25px; height: 6px; background-color: #000;
+            border: 2px solid #00ff41; border-bottom: none; border-radius: 4px 4px 0 0;
         }
 
-        .pasta:hover {
-            background-color: #003b00; /* Leve brilho verde ao passar o mouse */
-            transform: scale(1.1);
-        }
-
-        /* Estilos para quando clica */
-        .pasta-vazia { 
-            border-color: #ff3333 !important; /* Vermelho */
-            color: #ff3333 !important; 
-            box-shadow: 0 0 10px #ff3333;
-        }
-        
+        .pasta-vazia { border-color: #ff3333 !important; color: #ff3333 !important; }
         .pasta-vazia::before { border-color: #ff3333 !important; }
-
-        .pasta-prova { 
-            border-color: #ffff00 !important; /* Amarelo (Destaque) */
-            color: #ffff00 !important; 
-            box-shadow: 0 0 15px #ffff00;
-            background-color: #333300;
-        }
-        
+        .pasta-prova { border-color: #ffff00 !important; color: #ffff00 !important; background-color: #333300; }
         .pasta-prova::before { border-color: #ffff00 !important; }
 
-        /* Feedback da Pergunta Pedagógica */
-        #area-pergunta {
-            display: none; 
-            background-color: #0d0d0d;
-            padding: 15px;
-            border: 1px solid #00ff41;
-            margin-top: 20px;
-            box-shadow: inset 0 0 20px rgba(0,255,65,0.1);
-        }
-
+        #area-pergunta { display: none; margin-top: 20px; padding: 10px; border: 1px solid #ff3333; }
+        
         button {
-            background-color: #000;
-            color: #00ff41;
-            border: 1px solid #00ff41;
-            padding: 10px 20px;
-            margin: 5px;
-            cursor: pointer;
-            font-family: inherit;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-        button:hover { 
-            background-color: #00ff41; 
-            color: #000;
+            background-color: #000; color: #00ff41; border: 1px solid #00ff41;
+            padding: 10px; margin: 5px; cursor: pointer; font-weight: bold;
+            width: 100%; max-width: 300px;
         }
 
-        #agente-sigma {
-            margin-top: 25px;
-            color: #ccffcc;
-            border-top: 1px dashed #00ff41;
-            padding-top: 10px;
-            font-size: 0.9em;
+        #btn-proxima-fase {
+            display: none; background-color: #fff; color: #000; margin-top: 20px; width: 100%;
         }
 
-        /* Texto de destaque */
+        #agente-sigma { margin-top: 20px; color: #ccffcc; border-top: 1px dashed #00ff41; padding-top: 10px; font-size: 14px; }
         .destaque-amarelo { color: #ffff00; font-weight: bold; }
-
     </style>
 </head>
 <body>
 
     <div id="interface-servidor">
         <h2>📂 SERVIDOR CRIPTOGRAFADO</h2>
-        
         <div id="display-info">
             OBJETIVO: Localizar ARQUIVO DE DADOS.<br>
-            <small>Status: 5 Arquivos detectados. 3 Corrompidos (Vazios). 2 Íntegros.</small>
+            <small>5 Arquivos. 3 Vazios. 2 Íntegros.</small>
         </div>
 
         <div id="container-pastas"></div>
 
         <div id="area-pergunta">
-            <p id="texto-pergunta" style="color:#ff3333">ARQUIVO CORROMPIDO DELETADO!</p>
+            <p style="color:#ff3333">ARQUIVO DELETADO!</p>
             <p>A chance de achar os dados no próximo clique mudou?</p>
             <button onclick="responder('mudou')">SIM, MUDOU (Aumentou)</button>
-            <button onclick="responder('igual')">NÃO, É IGUAL (Independente)</button>
+            <button onclick="responder('igual')">NÃO, É IGUAL</button>
         </div>
+
+        <button id="btn-proxima-fase" onclick="irProximaFase()">PROSSEGUIR PARA PRÓXIMA FASE >></button>
 
         <div id="agente-sigma">
             <strong>🕵️ AGENTE SIGMA:</strong>
-            <span id="fala-sigma">Analise os pacotes de dados acima. Escolha um para descriptografar.</span>
+            <span id="fala-sigma">Escolha um pacote de dados para abrir.</span>
         </div>
     </div>
 
     <script>
-        // --- CONFIGURAÇÃO ---
-        // 0 = Arquivo Corrompido (Vazio), 1 = Dados (Prova)
         var pastas = [0, 0, 0, 1, 1];
-        
-        // Embaralha
         pastas.sort(() => Math.random() - 0.5);
-
         var jogoTravado = false;
 
-        // --- DESENHAR NA TELA ---
         function desenharPastas() {
             var container = document.getElementById("container-pastas");
             container.innerHTML = ""; 
-
             for (let i = 0; i < pastas.length; i++) {
                 let divPasta = document.createElement("div");
                 divPasta.className = "pasta";
-                divPasta.innerText = "?"; // Ícone de mistério
+                divPasta.innerText = "?";
                 divPasta.id = "pasta-" + i;
-                
                 divPasta.onclick = function() { abrirPasta(i); };
-
                 container.appendChild(divPasta);
             }
         }
 
-        // --- LÓGICA DO CLIQUE ---
         function abrirPasta(index) {
             if (jogoTravado) return;
-
             var conteudo = pastas[index];
             var divPasta = document.getElementById("pasta-" + index);
 
             if (conteudo === 1) {
-                // --- ACERTOU ---
+                // ACERTOU
                 divPasta.className = "pasta pasta-prova";
                 divPasta.innerText = "✓";
-                
                 document.getElementById("display-info").innerHTML = "<span class='destaque-amarelo'>DOWNLOAD CONCLUÍDO!</span>";
+                document.getElementById("fala-sigma").innerText = "Evidência segura. Missão cumprida.";
                 
-                // Muda a fala do Sigma
-                document.getElementById("fala-sigma").innerText = "Evidência segura. Indo para Análise de Fraudes...";
-                
-                // --- CÓDIGO DE REDIRECIONAMENTO ---
-                setTimeout(function() {
-                    window.location.href = "missao_2.html";
-                }, 4000);
-                // ----------------------------------
-
+                // MOSTRA BOTÃO DE PROSSEGUIR
+                document.getElementById("btn-proxima-fase").style.display = "inline-block";
                 jogoTravado = true;
-        
 
             } else {
-                // --- ERROU (Vazio) ---
+                // ERROU
                 divPasta.className = "pasta pasta-vazia";
-                divPasta.innerText = "X"; // Ícone de Erro
-                
-                document.getElementById("display-info").innerHTML = "<span style='color:#ff3333'>ERRO 404: Arquivo Vazio.</span>";
-                document.getElementById("display-info").style.borderColor = "#ff3333";
-                
-                document.getElementById("fala-sigma").innerText = "Arquivo inútil deletado do servidor.";
-
+                divPasta.innerText = "X";
+                document.getElementById("display-info").innerHTML = "<span style='color:#ff3333'>ERRO 404: Vazio.</span>";
                 jogoTravado = true;
-                
-                // Animação de deletar (some o arquivo)
                 setTimeout(function() {
-                    divPasta.style.visibility = "hidden"; // O espaço fica vazio, mostrando que "menos 1"
+                    divPasta.style.visibility = "hidden"; // Pasta some
                     mostrarPerguntaPedagogica();
-                }, 1000);
+                }, 800);
             }
         }
 
         function mostrarPerguntaPedagogica() {
-            var areaPergunta = document.getElementById("area-pergunta");
-            areaPergunta.style.display = "block";
-            
-            document.getElementById("fala-sigma").innerText = "Protocolo de segurança acionado. Responda para continuar.";
+            document.getElementById("area-pergunta").style.display = "block";
+            document.getElementById("fala-sigma").innerText = "Protocolo de segurança: Responda para continuar.";
         }
 
         function responder(resposta) {
-            var feedback = document.getElementById("display-info");
-            var areaPergunta = document.getElementById("area-pergunta");
-            var sigma = document.getElementById("fala-sigma");
-
             if (resposta === 'mudou') {
-                // --- RESPOSTA CORRETA ---
-                feedback.innerHTML = "LÓGICA VALIDADA.";
-                feedback.style.color = "#00ff41";
-                feedback.style.borderColor = "#00ff41";
-                
-                sigma.innerHTML = "Correto! Isso é um <strong>Evento Dependente</strong>.<br>Havia 5 arquivos. Deletamos 1. Agora restam 4.<br>Sua probabilidade de sucesso aumentou.";
-                
-                areaPergunta.style.display = "none";
+                document.getElementById("display-info").innerHTML = "LÓGICA VALIDADA.";
+                document.getElementById("display-info").style.color = "#00ff41";
+                document.getElementById("fala-sigma").innerHTML = "Correto! Evento Dependente: menos pastas = maior chance.";
+                document.getElementById("area-pergunta").style.display = "none";
                 jogoTravado = false; 
-
             } else {
-                // --- RESPOSTA ERRADA ---
-                sigma.innerText = "Negativo. Se deletamos um arquivo do servidor, o total de opções diminuiu. O denominador da fração mudou. Tente novamente.";
+                document.getElementById("fala-sigma").innerText = "Errado. Se deletamos um arquivo, o total diminuiu. A fração mudou.";
             }
         }
-
+        function irProximaFase() { window.location.href = "missao_2.html"; }
         desenharPastas();
-
     </script>
 </body>
 </html>

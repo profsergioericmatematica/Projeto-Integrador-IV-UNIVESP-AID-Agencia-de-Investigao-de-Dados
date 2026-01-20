@@ -17,36 +17,41 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
+            padding: 10px;
+            box-sizing: border-box;
         }
 
         #painel-nuclear {
-            width: 700px;
+            width: 100%;
+            max-width: 700px;
             border: 4px double #00ff41;
-            padding: 30px;
+            padding: 20px;
             border-radius: 15px;
             text-align: center;
             box-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
             background: linear-gradient(180deg, #0d0d0d 0%, #001a00 100%);
+            box-sizing: border-box;
         }
 
-        h2 { color: #fff; text-shadow: 0 0 10px #00ff41; margin-top: 0; }
+        h2 { color: #fff; margin-top: 0; font-size: clamp(20px, 5vw, 28px); }
 
         .dados-interceptados {
             background-color: #222;
             color: #ffff00;
-            font-size: 24px;
-            padding: 20px;
+            font-size: clamp(16px, 4vw, 24px);
+            padding: 15px;
             margin: 20px 0;
             border: 2px dashed #ffff00;
-            letter-spacing: 3px;
             font-weight: bold;
+            word-spacing: 5px;
         }
 
         .inputs-area {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
             margin-top: 30px;
-            gap: 10px;
         }
 
         .input-box {
@@ -55,70 +60,72 @@
             align-items: center;
         }
 
-        label { margin-bottom: 10px; font-weight: bold; font-size: 18px; }
-
         input {
-            background-color: #000;
-            color: #00ff41;
-            border: 2px solid #333;
-            padding: 10px;
-            font-size: 20px;
-            width: 80px;
-            text-align: center;
-            font-family: inherit;
+            background-color: #000; color: #00ff41; border: 2px solid #333;
+            padding: 10px; font-size: 20px; width: 80px; text-align: center;
         }
-        input:focus { outline: none; border-color: #00ff41; }
 
-        button {
-            margin-top: 40px;
-            padding: 15px 40px;
-            font-size: 20px;
-            background-color: #003300;
-            color: #fff;
-            border: 2px solid #00ff41;
-            cursor: pointer;
-            transition: 0.3s;
-            font-family: inherit;
-            text-transform: uppercase;
+        /* Botão de Ação Principal */
+        #btn-desativar {
+            margin-top: 30px; padding: 15px 30px; font-size: 18px;
+            background-color: #003300; color: #fff; border: 2px solid #00ff41;
+            cursor: pointer; font-weight: bold; width: 100%; max-width: 400px;
+        }
+
+        /* --- NOVOS ESTILOS DE VITÓRIA --- */
+        
+        /* Retângulo de Missão Cumprida */
+        #box-missao-cumprida {
+            display: none; /* Escondido */
+            border: 3px solid #ffff00;
+            background-color: #333300;
+            color: #ffff00;
+            padding: 20px;
+            font-size: 24px;
             font-weight: bold;
-        }
-        button:hover { background-color: #00ff41; color: #000; box-shadow: 0 0 20px #00ff41; }
-
-        #agente-sigma {
-            margin-top: 30px;
-            min-height: 40px;
-            color: #ccffcc;
-            border-top: 1px solid #333;
-            padding-top: 20px;
+            text-transform: uppercase;
+            margin: 20px auto;
+            border-radius: 10px;
+            animation: piscar-borda 1.5s infinite;
+            width: 80%;
         }
 
-        /* Modal de Ajuda (Dica) */
-        .dica-box {
-            display: none;
-            margin-top: 20px;
-            background-color: #333;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 14px;
-            color: #fff;
-            text-align: left;
+        /* Botão Retornar à Base */
+        #btn-retorno {
+            display: none; /* Escondido */
+            background-color: #fff;
+            color: #000;
+            font-weight: bold;
+            border: 2px solid #ffff00;
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+            max-width: 400px;
+            text-transform: uppercase;
         }
+        #btn-retorno:hover { background-color: #ffff00; }
 
-        .btn-ajuda {
-            background: none; border: none; color: #888; font-size: 12px; margin-top: 10px; text-decoration: underline; cursor: pointer; padding: 0;
+        #dica-box { display: none; margin-top: 20px; background-color: #333; padding: 10px; text-align: left; font-size: 12px; color: #fff; }
+        .btn-ajuda { background: none; border: none; color: #888; font-size: 12px; margin-top: 10px; text-decoration: underline; width: auto; cursor:pointer;}
+        
+        #agente-sigma { margin-top:20px; color:#ccffcc; border-top:1px solid #333; padding-top:10px; min-height: 40px;}
+
+        @keyframes piscar-borda { 
+            0% { box-shadow: 0 0 10px #ffff00; transform: scale(1); } 
+            50% { box-shadow: 0 0 30px #ffff00; transform: scale(1.02); } 
+            100% { box-shadow: 0 0 10px #ffff00; transform: scale(1); } 
         }
-
     </style>
 </head>
 <body>
 
     <div id="painel-nuclear">
-        <h2>⚠️ INTERCEPTAÇÃO FINAL ⚠️</h2>
-        <p>Agente, esta sequência controla o servidor mestre. Calcule as chaves de segurança para neutralizá-lo.</p>
+        <h2>⚠️ INTERCEPTAÇÃO FINAL</h2>
+        <p>Calcule as chaves de segurança para neutralizar o servidor.</p>
 
-        <div class="dados-interceptados" id="sequencia-numeros">
-            CARREGANDO...
-        </div>
+        <div class="dados-interceptados" id="sequencia-numeros">CARREGANDO...</div>
 
         <div class="inputs-area">
             <div class="input-box">
@@ -135,16 +142,19 @@
             </div>
         </div>
 
-        <button onclick="verificarCodigos()">DESATIVAR SISTEMA</button>
+        <button id="btn-desativar" onclick="verificarCodigos()">DESATIVAR SISTEMA</button>
+        
+        <div id="box-missao-cumprida">🏆 MISSÃO CUMPRIDA 🏆</div>
+        <button id="btn-retorno" onclick="voltarBase()">RETORNANDO À BASE >></button>
         
         <br>
         <button class="btn-ajuda" onclick="toggleAjuda()">Precisa de ajuda com as fórmulas?</button>
 
-        <div id="dica-box" class="dica-box">
+        <div id="dica-box">
             <ul>
-                <li><strong>Média:</strong> Some todos os números e divida pela quantidade deles.</li>
-                <li><strong>Moda:</strong> É o número que mais se repete na sequência.</li>
-                <li><strong>Mediana:</strong> Coloque em ordem crescente. É o número que fica exatamente no meio.</li>
+                <li><strong>Média:</strong> Soma tudo e divide pela quantidade.</li>
+                <li><strong>Moda:</strong> O número que mais repete.</li>
+                <li><strong>Mediana:</strong> O do meio (coloque em ordem crescente!).</li>
             </ul>
         </div>
 
@@ -155,72 +165,49 @@
     </div>
 
     <script>
-        // --- GERADOR DE PROBLEMAS ALEATÓRIOS ---
-        // Vamos criar uma sequência que tenha Moda e Mediana fáceis de calcular (números inteiros)
-        
-        // Exemplo fixo para garantir que a conta dê exata:
-        // Sequência: 2, 5, 2, 8, 3
-        // Ordenada: 2, 2, 3, 5, 8
-        // Média: (2+5+2+8+3)/5 = 20/5 = 4
-        // Moda: 2
-        // Mediana: 3
-        
-        // Para ficar dinâmico, vamos ter um banco de sequências válidas
         const niveis = [
             { nums: [2, 5, 2, 8, 3], media: 4, moda: 2, mediana: 3 },
             { nums: [10, 20, 10, 40, 20, 10, 30], media: 20, moda: 10, mediana: 20 },
             { nums: [5, 5, 10, 15, 5], media: 8, moda: 5, mediana: 5 }
         ];
-
-        // Escolhe uma aleatória
         const desafio = niveis[Math.floor(Math.random() * niveis.length)];
-
-        // Mostra na tela (com espaços bonitos)
-        document.getElementById("sequencia-numeros").innerText = desafio.nums.join("  -  ");
+        document.getElementById("sequencia-numeros").innerText = desafio.nums.join(" - ");
 
         function verificarCodigos() {
-            // Pega o que o aluno digitou
-            let chuteMedia = parseFloat(document.getElementById("input-media").value);
-            let chuteModa = parseFloat(document.getElementById("input-moda").value);
-            let chuteMediana = parseFloat(document.getElementById("input-mediana").value);
-            
+            let m1 = parseFloat(document.getElementById("input-media").value);
+            let m2 = parseFloat(document.getElementById("input-moda").value);
+            let m3 = parseFloat(document.getElementById("input-mediana").value);
             let sigma = document.getElementById("msg-sigma");
             let painel = document.getElementById("painel-nuclear");
 
-            // Verifica se está tudo certo
-            if (chuteMedia === desafio.media && chuteModa === desafio.moda && chuteMediana === desafio.mediana) {
+            if (m1 === desafio.media && m2 === desafio.moda && m3 === desafio.mediana) {
                 // --- VITÓRIA ---
-                painel.style.borderColor = "#ffff00"; // Borda Dourada
-                document.querySelector("h2").innerText = "🏆 MISSÃO CUMPRIDA 🏆";
+                painel.style.borderColor = "#ffff00"; 
+                document.querySelector("h2").innerText = "SISTEMA NEUTRALIZADO";
+                document.querySelector("h2").style.color = "#ffff00";
                 
-                // Esconde os inputs
+                // Mensagem final do Agente
+                sigma.innerHTML = "<span style='color:#ffff00'>PARABÉNS, AGENTE!</span> Você salvou a agência e dominou a Estatística.";
+                
+                // Esconde inputs e botão antigo
                 document.querySelector(".inputs-area").style.display = "none";
-                document.querySelector("button").style.display = "none";
-                document.querySelector(".dados-interceptados").style.display = "none";
+                document.getElementById("btn-desativar").style.display = "none";
+                document.querySelector(".btn-ajuda").style.display = "none";
                 
-                sigma.innerHTML = "<span style='color:#ffff00; font-size:18px'>PARABÉNS, AGENTE!</span><br><br>Você dominou Probabilidade, Gráficos e Estatística.<br>A Agência A.I.D. está salva graças a você.";
-                
-                // Efeito visual de sucesso
-                document.body.style.backgroundColor = "#001a00";
-
-                sigma.innerHTML = "<span style='color:#ffff00; font-size:18px'>PARABÉNS, AGENTE!</span><br>Missão Cumprida. Retornando à base.";
-                
-                // --- VOLTAR PARA O MENU ---
-                setTimeout(function() {
-                    window.location.href = "index.html";
-                }, 8000); // 8 segundos para ler a mensagem de vitória
-                // --------------------------
+                // MOSTRA OS NOVOS ELEMENTOS
+                document.getElementById("box-missao-cumprida").style.display = "block";
+                document.getElementById("btn-retorno").style.display = "block";
 
             } else {
-                // --- ERRO (Analisa qual errou para dar dica) ---
+                // ERRO
                 let erros = [];
-                if (chuteMedia !== desafio.media) erros.push("MÉDIA incorreta");
-                if (chuteModa !== desafio.moda) erros.push("MODA incorreta");
-                if (chuteMediana !== desafio.mediana) erros.push("MEDIANA incorreta");
-
-                sigma.innerHTML = "<span style='color:#ff3333'>FALHA NA DECODIFICAÇÃO!</span><br>" + erros.join(", ") + ".<br>Recalcule e tente novamente.";
+                if (m1 !== desafio.media) erros.push("MÉDIA");
+                if (m2 !== desafio.moda) erros.push("MODA");
+                if (m3 !== desafio.mediana) erros.push("MEDIANA");
                 
-                // Treme a tela
+                sigma.innerHTML = "<span style='color:#ff3333'>ERRO!</span> Incorreto: " + erros.join(", ");
+                
+                // Efeito de tremor
                 painel.style.transform = "translateX(10px)";
                 setTimeout(() => painel.style.transform = "translateX(0)", 100);
             }
@@ -228,13 +215,12 @@
 
         function toggleAjuda() {
             let box = document.getElementById("dica-box");
-            if (box.style.display === "block") {
-                box.style.display = "none";
-            } else {
-                box.style.display = "block";
-            }
+            box.style.display = (box.style.display === "block") ? "none" : "block";
         }
 
+        function voltarBase() {
+            window.location.href = "index.html";
+        }
     </script>
 </body>
 </html>

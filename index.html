@@ -13,51 +13,112 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             text-align: center;
             background-image: linear-gradient(rgba(0, 20, 0, 0.9), rgba(0, 20, 0, 0.9)), url('https://img.freepik.com/fotos-gratis/fundo-de-tecnologia-digital-com-codigo-binario_53876-117565.jpg');
             background-size: cover;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
-        h1 { font-size: 60px; margin-bottom: 10px; text-shadow: 0 0 20px #00ff41; }
-        h3 { color: #fff; margin-top: 0; letter-spacing: 3px; }
+        h1 { 
+            font-size: clamp(40px, 8vw, 60px); /* Ajusta tamanho automaticamente */
+            margin-bottom: 10px; 
+            text-shadow: 0 0 20px #00ff41; 
+        }
+        h3 { color: #fff; margin-top: 0; letter-spacing: 3px; font-size: clamp(14px, 4vw, 18px); }
 
-        .btn-start {
-            margin-top: 50px;
-            padding: 20px 50px;
-            font-size: 24px;
-            background-color: #003300;
-            color: #fff;
+        /* Container dos Botões */
+        .menu-botoes {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 40px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .btn-menu {
+            padding: 20px;
+            font-size: 18px;
+            background-color: #001a00;
+            color: #00ff41;
             border: 2px solid #00ff41;
             cursor: pointer;
             text-transform: uppercase;
             font-weight: bold;
             font-family: inherit;
             transition: 0.3s;
-            text-decoration: none; /* Remove sublinhado do link */
-            display: inline-block;
+            text-decoration: none;
+            display: block;
+        }
+
+        .btn-menu:hover {
+            background-color: #00ff41;
+            color: #000;
+            box-shadow: 0 0 15px #00ff41;
+        }
+
+        .btn-start {
+            background-color: #003300;
+            color: #fff;
+            border-color: #fff;
             animation: piscar 2s infinite;
         }
 
-        .btn-start:hover {
-            background-color: #00ff41;
-            color: #000;
-            box-shadow: 0 0 30px #00ff41;
+        /* Modais (Janelas de Texto) */
+        .modal-overlay {
+            display: none; /* Escondido por padrão */
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .modal-content {
+            background-color: #0d0d0d;
+            border: 2px solid #00ff41;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            text-align: left;
+            border-radius: 10px;
+            max-height: 80vh;
+            overflow-y: auto; /* Rolagem se o texto for grande */
+            position: relative;
+        }
+
+        .modal-content h2 { border-bottom: 1px dashed #00ff41; padding-bottom: 10px; margin-top: 0; }
+        .modal-content p, .modal-content li { line-height: 1.6; color: #ccc; }
+        
+        .btn-fechar {
+            background-color: #330000;
+            color: #ff3333;
+            border: 1px solid #ff3333;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            width: 100%;
         }
 
         .creditos {
-            margin-top: 80px;
-            font-size: 14px;
-            color: #888;
+            margin-top: 60px;
+            font-size: 12px;
+            color: #666;
             border-top: 1px solid #333;
             padding-top: 20px;
-            width: 80%;
+            width: 100%;
         }
 
         @keyframes piscar {
             0% { opacity: 1; }
-            50% { opacity: 0.7; }
+            50% { opacity: 0.8; }
             100% { opacity: 1; }
         }
     </style>
@@ -67,15 +128,64 @@
     <div>
         <h1>🕵️ A.I.D.</h1>
         <h3>AGÊNCIA DE INVESTIGAÇÃO DE DADOS</h3>
-        <p>Projeto LIAM - Laboratório Interativo de Alfabetização Matemática</p>
+        <p style="color:#888; font-size:14px;">Projeto LIAM - Laboratório Interativo</p>
     </div>
 
-    <a href="missao_1a.html" class="btn-start">INICIAR OPERAÇÃO</a>
+    <div class="menu-botoes">
+        <button class="btn-menu" onclick="abrirModal('modal-revisao')">📚 REVISÃO TEÓRICA</button>
+        
+        <button class="btn-menu" onclick="abrirModal('modal-tutorial')">🎮 COMO JOGAR</button>
+        
+        <a href="missao_1a.html" class="btn-menu btn-start">🚀 INICIAR OPERAÇÃO</a>
+    </div>
+
+    <div id="modal-revisao" class="modal-overlay">
+        <div class="modal-content">
+            <h2>RESUMO DO AGENTE</h2>
+            <p><strong>1. Probabilidade:</strong></p>
+            <ul>
+                <li><strong>Eventos Independentes:</strong> O passado não importa. Ex: Senhas, Dados. Se você jogar um dado e cair 6, a chance de cair 6 de novo continua a mesma.</li>
+                <li><strong>Eventos Dependentes:</strong> O passado muda o futuro. Ex: Retirar cartas ou pastas sem devolver. O total diminui, mudando a fração.</li>
+            </ul>
+            <p><strong>2. Gráficos na Mídia:</strong></p>
+            <ul>
+                <li>Cuidado com gráficos que não começam no zero (Eixo Truncado). Eles exageram diferenças pequenas.</li>
+            </ul>
+            <p><strong>3. Tendência Central:</strong></p>
+            <ul>
+                <li><strong>Média:</strong> Soma tudo e divide pela quantidade.</li>
+                <li><strong>Moda:</strong> O que mais se repete.</li>
+                <li><strong>Mediana:</strong> O termo do meio (coloque em ordem crescente antes!).</li>
+            </ul>
+            <button class="btn-fechar" onclick="fecharModal('modal-revisao')">FECHAR ARQUIVO</button>
+        </div>
+    </div>
+
+    <div id="modal-tutorial" class="modal-overlay">
+        <div class="modal-content">
+            <h2>PROTOCOLO DA MISSÃO</h2>
+            <p>Você é um Recruta da A.I.D. Sua tarefa é investigar crimes cibernéticos usando matemática.</p>
+            <ol>
+                <li><strong>Não chute:</strong> O Agente Sigma sabe quando você chuta. Pense na lógica.</li>
+                <li><strong>Use as Dicas:</strong> Se errar, leia o feedback do Agente Sigma. Ele te ensina a resposta.</li>
+                <li><strong>Fase Final:</strong> Tenha papel e caneta (ou calculadora) em mãos para a decodificação final.</li>
+            </ol>
+            <button class="btn-fechar" onclick="fecharModal('modal-tutorial')">ENTENDIDO</button>
+        </div>
+    </div>
 
     <div class="creditos">
-        <p>Desenvolvido pelos alunos do Curso de Licenciatura em Matemática - UNIVESP</p>
+        <p>Desenvolvido pelos alunos de Licenciatura em Matemática - UNIVESP</p>
         <p>Projeto Integrador IV - 2026</p>
     </div>
 
+    <script>
+        function abrirModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+        function fecharModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+    </script>
 </body>
 </html>

@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A.I.D. - Sincronização de Dados</title>
-
+    <title>A.I.D. - Sincronização</title>
     <style>
-        /* --- ESTILO GERAL (Hacker Theme) --- */
         body {
             background-color: #0d0d0d;
             color: #00ff41;
@@ -16,182 +14,109 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            user-select: none; /* Evita selecionar texto ao clicar */
+            padding: 10px;
+            user-select: none;
+            box-sizing: border-box;
         }
 
         #console-missao {
-            width: 800px;
-            max-width: 95%;
+            width: 100%;
+            max-width: 800px;
             margin-top: 20px;
             text-align: center;
         }
 
-        h2 { border-bottom: 1px dashed #00ff41; padding-bottom: 10px; }
+        h2 { border-bottom: 1px dashed #00ff41; padding-bottom: 10px; font-size: 20px; }
+        p { font-size: 14px; }
 
-        /* --- ÁREA DO JOGO (2 COLUNAS) --- */
         .game-board {
             display: flex;
             justify-content: space-between;
-            margin-top: 30px;
-            gap: 20px;
+            margin-top: 20px;
+            gap: 15px;
+            /* MOBILE: Em telas pequenas, muda para coluna única */
+            flex-wrap: wrap; 
         }
 
         .coluna {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            width: 45%;
+            gap: 15px;
+            flex: 1; /* Ocupa espaço igual */
+            min-width: 250px; /* Se ficar muito pequeno, quebra linha */
         }
 
-        /* --- CARTÕES DE DADOS (ESQUERDA) --- */
-        .card-dado {
+        .card-dado, .card-grafico {
             background-color: #001a00;
             border: 2px solid #005500;
-            padding: 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-            position: relative;
-        }
-
-        .card-dado:hover { border-color: #00ff41; box-shadow: 0 0 10px #00ff41; }
-        .card-dado.selecionado { background-color: #003300; border-color: #ffff00; color: #ffff00; }
-        .card-dado.resolvido { opacity: 0.5; pointer-events: none; border-color: #00ff41; background-color: #000; text-decoration: line-through; }
-
-        /* --- CARTÕES DE GRÁFICOS (DIREITA) --- */
-        .card-grafico {
-            background-color: #0d0d0d;
-            border: 2px solid #333;
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .card-grafico:hover { border-color: #00ff41; }
-        .card-grafico.selecionado { border-color: #ffff00; box-shadow: 0 0 15px #ffff00; }
-
-        /* --- DESENHOS DOS GRÁFICOS (CSS PURO) --- */
-        /* Ícone Pizza */
-        .icon-pizza {
-            width: 50px; height: 50px;
-            border-radius: 50%;
-            background: conic-gradient(#00ff41 0% 30%, #005500 30% 70%, #fff 70% 100%);
-            border: 2px solid #00ff41;
-        }
-        /* Ícone Barras */
-        .icon-barras {
-            display: flex; align-items: flex-end; gap: 5px; height: 50px;
-        }
-        .bar { width: 10px; background-color: #00ff41; }
-        /* Ícone Linha */
-        .icon-linha {
-            width: 60px; height: 50px;
-            position: relative;
-            border-left: 2px solid #00ff41; border-bottom: 2px solid #00ff41;
-        }
-        .icon-linha::after {
-            content: ''; position: absolute;
-            width: 100%; height: 100%;
-            background: linear-gradient(to top right, transparent 48%, #00ff41 48%, #00ff41 52%, transparent 52%);
-        }
-
-        /* --- FEEDBACK --- */
-        #agente-sigma {
-            margin-top: 30px;
-            border: 1px solid #00ff41;
             padding: 15px;
-            border-radius: 5px;
-            background-color: #000;
-            color: #ccffcc;
-            min-height: 50px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 14px;
+            display: flex; align-items: center; justify-content: center;
+            min-height: 80px;
         }
 
-        .erro-anim { animation: tremer 0.5s; }
-        @keyframes tremer {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            50% { transform: translateX(10px); }
-            75% { transform: translateX(-10px); }
-            100% { transform: translateX(0); }
-        }
+        .card-dado:hover, .card-grafico:hover { border-color: #00ff41; }
+        .selecionado { background-color: #003300; border-color: #ffff00; color: #ffff00; }
+        .resolvido { opacity: 0.5; pointer-events: none; border-color: #00ff41; background-color: #000; }
+
+        /* Ícones CSS */
+        .icon-pizza { width: 40px; height: 40px; border-radius: 50%; background: conic-gradient(#00ff41 0% 30%, #005500 30% 70%, #fff 70% 100%); border: 2px solid #00ff41; margin-bottom:5px; display:inline-block;}
+        .icon-barras { display: flex; align-items: flex-end; gap: 3px; height: 40px; margin-bottom:5px; display:inline-block;}
+        .bar { width: 8px; background-color: #00ff41; display:inline-block; }
+        .icon-linha { width: 40px; height: 40px; border-left: 2px solid #00ff41; border-bottom: 2px solid #00ff41; margin-bottom:5px; display:inline-block; position: relative;}
+        .icon-linha::after { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(45deg, transparent 48%, #00ff41 48%, #00ff41 52%, transparent 52%); }
+
+        #agente-sigma { margin-top: 20px; border: 1px solid #00ff41; padding: 10px; background-color: #000; color: #ccffcc; min-height: 40px; font-size: 14px;}
         
         #btn-proximo {
-            display: none;
-            margin-top: 20px;
-            padding: 15px 30px;
-            background-color: #00ff41;
-            color: #000;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
+            display: none; margin-top: 20px; padding: 15px 30px; background-color: #00ff41; color: #000; font-weight: bold; border: none; cursor: pointer; width: 100%;
         }
-
     </style>
 </head>
 <body>
 
     <div id="console-missao">
-        <h2>🔄 SINCRONIZAÇÃO DE DADOS</h2>
-        <p>Instrução: Clique no DADO (Esquerda) e depois no GRÁFICO IDEAL (Direita).</p>
+        <h2>🔄 SINCRONIZAÇÃO</h2>
+        <p>Clique no DADO e depois no GRÁFICO.</p>
 
         <div class="game-board">
             <div class="coluna" id="coluna-dados">
                 <div class="card-dado" data-tipo="tempo" onclick="selecionarDado(this)">
-                    📂 DADO A01:<br>
-                    "Variação da temperatura do servidor ao longo de 24 horas."
+                    📂 "Variação da temperatura em 24h"
                 </div>
-
                 <div class="card-dado" data-tipo="partes" onclick="selecionarDado(this)">
-                    📂 DADO B02:<br>
-                    "Distribuição do orçamento: 50% Segurança, 30% Hardware, 20% Café."
+                    📂 "Orçamento: 50% Segurança, 30% Hardware..."
                 </div>
-
                 <div class="card-dado" data-tipo="comparacao" onclick="selecionarDado(this)">
-                    📂 DADO C03:<br>
-                    "Comparação da quantidade de hacks feitos pelo Agente A vs Agente B."
+                    📂 "Comparar hacks: Agente A vs Agente B"
                 </div>
             </div>
 
             <div class="coluna" id="coluna-graficos">
-                
                 <div class="card-grafico" data-tipo="partes" onclick="selecionarGrafico(this)">
-                    <div style="text-align:center">
-                        <div class="icon-pizza"></div>
-                        <small>Setores (Pizza)</small>
-                    </div>
+                    <div><div class="icon-pizza"></div><br>Setores</div>
                 </div>
-
                 <div class="card-grafico" data-tipo="tempo" onclick="selecionarGrafico(this)">
-                    <div style="text-align:center">
-                        <div class="icon-linha"></div>
-                        <small>Linhas</small>
-                    </div>
+                    <div><div class="icon-linha"></div><br>Linhas</div>
                 </div>
-
                 <div class="card-grafico" data-tipo="comparacao" onclick="selecionarGrafico(this)">
-                    <div style="text-align:center">
-                        <div class="icon-barras">
-                            <div class="bar" style="height: 20px"></div>
-                            <div class="bar" style="height: 40px"></div>
-                            <div class="bar" style="height: 30px"></div>
-                        </div>
-                        <small>Colunas</small>
+                    <div>
+                        <div class="icon-barras"><div class="bar" style="height:15px"></div><div class="bar" style="height:30px"></div></div>
+                        <br>Colunas
                     </div>
                 </div>
-
             </div>
         </div>
 
         <div id="agente-sigma">
             <strong>🕵️ AGENTE SIGMA:</strong>
-            <span id="msg-sigma">Aguardando sincronização... Selecione um pacote de dados.</span>
+            <span id="msg-sigma">Selecione um pacote de dados.</span>
         </div>
 
-        <button id="btn-proximo" onclick="finalizarFase()">PRÓXIMA FASE >></button>
+        <button id="btn-proximo" onclick="finalizarFase()">PROSSEGUIR PARA PRÓXIMA FASE >></button>
     </div>
 
     <script>
@@ -199,86 +124,41 @@
         let acertos = 0;
 
         function selecionarDado(elemento) {
-            // Se já está resolvido, ignora
             if (elemento.classList.contains('resolvido')) return;
-
-            // Remove seleção anterior visual
             document.querySelectorAll('.card-dado').forEach(el => el.classList.remove('selecionado'));
-            
-            // Marca o novo
             elemento.classList.add('selecionado');
             dadoSelecionado = elemento;
-
-            document.getElementById('msg-sigma').innerText = "Dado selecionado. Agora escolha o gráfico que melhor representa essa informação.";
-            document.getElementById('msg-sigma').style.color = "#ccffcc";
+            document.getElementById('msg-sigma').innerText = "Agora escolha o gráfico correspondente.";
         }
 
         function selecionarGrafico(elementoGrafico) {
             if (!dadoSelecionado) {
-                document.getElementById('msg-sigma').innerText = "⚠️ Erro: Você precisa clicar num texto da esquerda primeiro!";
+                document.getElementById('msg-sigma').innerText = "⚠️ Clique num texto primeiro!";
                 return;
             }
-
             let tipoDado = dadoSelecionado.getAttribute('data-tipo');
             let tipoGrafico = elementoGrafico.getAttribute('data-tipo');
 
             if (tipoDado === tipoGrafico) {
-                // --- ACERTOU ---
                 acertos++;
-                
-                // Feedback Visual
                 dadoSelecionado.classList.remove('selecionado');
                 dadoSelecionado.classList.add('resolvido');
-                dadoSelecionado.innerHTML += " ✅ SINCRONIZADO";
+                dadoSelecionado.innerHTML += " ✅";
                 
-                // Feedback Texto
-                let explicacao = "";
-                if(tipoDado === 'tempo') explicacao = "Correto! Gráficos de LINHA são perfeitos para ver evolução no tempo.";
-                if(tipoDado === 'partes') explicacao = "Exato! Gráficos de SETORES (Pizza) mostram bem como um todo é dividido.";
-                if(tipoDado === 'comparacao') explicacao = "Boa! Gráficos de COLUNAS são ideais para comparar valores individuais.";
-
-                document.getElementById('msg-sigma').innerText = explicacao;
+                document.getElementById('msg-sigma').innerText = "Sincronização correta!";
                 document.getElementById('msg-sigma').style.color = "#ffff00";
-
-                // Reseta seleção
                 dadoSelecionado = null;
 
-                // Verifica Vitória
                 if (acertos === 3) {
-                    setTimeout(() => {
-                        document.getElementById('msg-sigma').innerHTML = "SISTEMA 100% OPERACIONAL. Todos os gráficos foram escolhidos corretamente.";
-                        document.getElementById('btn-proximo').style.display = "inline-block";
-                    }, 1500);
+                    document.getElementById('msg-sigma').innerHTML = "SISTEMA 100% OPERACIONAL.";
+                    document.getElementById('btn-proximo').style.display = "inline-block";
                 }
-
             } else {
-                // --- ERROU ---
-                let sigma = document.getElementById('agente-sigma');
-                
-                // Animação de tremor
-                sigma.classList.remove('erro-anim');
-                void sigma.offsetWidth; // Hack para reiniciar animação
-                sigma.classList.add('erro-anim');
-
-                // Explicação do erro (Feedback Pedagógico)
-                let msgErro = "Incompatível! ";
-                if (tipoGrafico === 'partes') msgErro += "Pizza é ruim para comparar ou ver tempo. Use Pizza apenas para porcentagens de um total.";
-                if (tipoGrafico === 'tempo') msgErro += "Linha é para continuidade (tempo). Não serve para comparar categorias soltas.";
-                
-                document.getElementById('msg-sigma').innerText = msgErro + " Tente novamente.";
+                document.getElementById('msg-sigma').innerText = "Incompatível! Tente outro gráfico.";
                 document.getElementById('msg-sigma').style.color = "#ff3333";
             }
         }
-
-        function finalizarFase() {
-            // Remove o alert antigo e coloca isso:
-            document.getElementById('msg-sigma').innerText = "Sincronização Total. Preparando para o Desafio Final...";
-            
-            setTimeout(function() {
-                window.location.href = "missao_fase4.html";
-            }, 2000);
-        }
-
+        function finalizarFase() { window.location.href = "missao_fase4.html"; }
     </script>
 </body>
 </html>
