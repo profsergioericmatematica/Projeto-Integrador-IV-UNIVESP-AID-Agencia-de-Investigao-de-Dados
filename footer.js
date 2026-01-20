@@ -65,8 +65,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 drops[i] = 0;
             }
         }
-        // Chama o próximo quadro da animação
-        requestAnimationFrame(drawMatrix);
+        // Chama o próximo quadro com um atraso (controla a velocidade)
+        setTimeout(() => {
+            requestAnimationFrame(drawMatrix);
+        }, 50); // <--- Mude este valor: 50 = Normal, 100 = Lento, 0 = Rápido
     }
 
     // 7. Iniciar a animação
