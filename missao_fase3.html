@@ -79,37 +79,59 @@
 <body>
 
     <div id="console-missao">
-        <h2>🔄 SINCRONIZAÇÃO</h2>
-        <p>Clique no DADO e depois no GRÁFICO.</p>
+        <h2>🔄 SINCRONIZAÇÃO DE DADOS</h2>
+        <p>Instrução: Clique no DADO (Esquerda) e depois no GRÁFICO IDEAL (Direita).</p>
 
         <div class="game-board">
             <div class="coluna" id="coluna-dados">
                 <div class="card-dado" data-tipo="tempo" onclick="selecionarDado(this)">
-                    📂 "Variação da temperatura em 24h"
+                    📂 DADO A01:<br>
+                    "Variação da temperatura do servidor ao longo de 24 horas."
                 </div>
+
                 <div class="card-dado" data-tipo="partes" onclick="selecionarDado(this)">
-                    📂 "Orçamento: 50% Segurança, 30% Hardware..."
+                    📂 DADO B02:<br>
+                    "Distribuição do orçamento: 50% Segurança, 30% Hardware, 20% Café."
                 </div>
+
                 <div class="card-dado" data-tipo="comparacao" onclick="selecionarDado(this)">
-                    📂 "Comparar hacks: Agente A vs Agente B"
+                    📂 DADO C03:<br>
+                    "Comparação da quantidade de hacks feitos pelo Agente A vs Agente B."
                 </div>
             </div>
 
             <div class="coluna" id="coluna-graficos">
+                
                 <div class="card-grafico" data-tipo="partes" onclick="selecionarGrafico(this)">
-                    <div><div class="icon-pizza"></div><br>Setores</div>
-                </div>
-                <div class="card-grafico" data-tipo="tempo" onclick="selecionarGrafico(this)">
-                    <div><div class="icon-linha"></div><br>Linhas</div>
-                </div>
-                <div class="card-grafico" data-tipo="comparacao" onclick="selecionarGrafico(this)">
-                    <div>
-                        <div class="icon-barras"><div class="bar" style="height:15px"></div><div class="bar" style="height:30px"></div></div>
-                        <br>Colunas
+                    <div style="text-align:center">
+                        <div class="icon-pizza"></div>
+                        <small>Setores (Pizza)</small>
                     </div>
                 </div>
+
+                <div class="card-grafico" data-tipo="tempo" onclick="selecionarGrafico(this)">
+                    <div style="text-align:center">
+                        <div class="icon-linha"></div>
+                        <small>Linhas</small>
+                    </div>
+                </div>
+
+                <div class="card-grafico" data-tipo="comparacao" onclick="selecionarGrafico(this)">
+                    <div style="text-align:center">
+                        <div class="icon-barras">
+                            <div class="bar" style="height: 20px"></div>
+                            <div class="bar" style="height: 40px"></div>
+                            <div class="bar" style="height: 30px"></div>
+                        </div>
+                        <small>Colunas</small>
+                    </div>
+                </div>
+
             </div>
         </div>
+
+
+
 
         <div id="agente-sigma">
             <strong>🕵️ AGENTE SIGMA:</strong>
@@ -160,5 +182,7 @@
         }
         function finalizarFase() { window.location.href = "missao_fase4.html"; }
     </script>
+<script src="footer.js"></script>
+
 </body>
 </html>

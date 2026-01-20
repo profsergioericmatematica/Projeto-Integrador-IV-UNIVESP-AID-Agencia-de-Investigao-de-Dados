@@ -3,31 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A.I.D. - Missão Cofre</title>
+    <title>A.I.D. - Missão Cofre Digital V2</title>
+
     <style>
+        /* --- ESTILO (CSS) --- */
         body {
             background-color: #0d0d0d;
             color: #00ff41; 
             font-family: 'Courier New', Courier, monospace;
             display: flex;
+            flex-direction: column; /* <--- ESSA LINHA CONSERTA O LAYOUT */
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 10px; /* Espaço nas bordas do celular */
+            padding: 10px;
             box-sizing: border-box;
         }
 
         #container-jogo {
             width: 100%;
-            max-width: 450px; /* Limite para PC, ajustável no celular */
+            max-width: 450px;
             border: 2px solid #00ff41;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
             text-align: center;
             position: relative;
-            background-color: #0d0d0d;
+            /* Margem automática para garantir que o jogo fique centralizado e o rodapé no final */
+            margin-top: auto; 
+            margin-bottom: auto;
         }
 
         #info-topo {
@@ -52,6 +57,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            transition: background-color 0.3s;
         }
 
         #agente-sigma-box {
@@ -60,7 +66,7 @@
             padding-top: 10px;
             font-size: 14px;
             color: #ccffcc;
-            min-height: 60px;
+            min-height: 80px;
         }
 
         .teclado {
@@ -77,13 +83,17 @@
             font-size: 18px;
             cursor: pointer;
             font-family: inherit;
+            transition: 0.2s;
         }
 
-        button:active { background-color: #00ff41; color: #000; }
+        button:hover {
+            background-color: #00ff41;
+            color: #000;
+        }
 
         /* Botão Próxima Fase */
         #btn-proxima-fase {
-            display: none; /* Escondido */
+            display: none;
             width: 100%;
             background-color: #fff;
             color: #000;
@@ -93,12 +103,16 @@
         }
 
         .btn-hack {
-            background-color: #ffff00;
+            background-color: #ffff00; 
             color: #000;
+            border: 2px solid #fff;
             font-weight: bold;
             display: none;
             width: 100%;
             margin-top: 10px;
+        }
+        .btn-hack:hover {
+            background-color: #ffcc00;
         }
 
         #area-pergunta {
@@ -106,10 +120,18 @@
             flex-direction: column;
             gap: 10px;
         }
-        
-        .btn-resposta { width: 100%; margin-bottom: 5px; }
-        .texto-destaque { color: #ffff00; font-weight: bold; }
 
+        .btn-resposta {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .texto-destaque {
+            color: #ffff00;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
         @keyframes piscar { from { opacity: 1; } to { opacity: 0.7; } }
     </style>
 </head>
@@ -122,6 +144,7 @@
         </div>
 
         <h2>COFRE DIGITAL</h2>
+        
         <div id="tela-display">SISTEMA BLOQUEADO</div>
 
         <div id="teclado-numerico" class="teclado">
@@ -143,7 +166,7 @@
 
         <div id="area-pergunta">
             <p>O sistema reiniciou! A chance de acertar agora é MAIOR, MENOR ou IGUAL?</p>
-            <button class="btn-resposta" onclick="verificarRespostaPedagogica('mudou')">A chance MUDOU</button>
+            <button class="btn-resposta" onclick="verificarRespostaPedagogica('mudou')">A chance MUDOU (Maior ou Menor)</button>
             <button class="btn-resposta" onclick="verificarRespostaPedagogica('igual')">A chance continua IGUAL</button>
         </div>
 
@@ -165,27 +188,34 @@
         function verificarChute(numeroEscolhido) {
             totalTentativas++;
             atualizarContador();
+
             var tela = document.getElementById("tela-display");
             var sigma = document.getElementById("mensagem-sigma");
 
             if (numeroEscolhido === numeroSecreto) {
-                // VITÓRIA
-                tela.innerHTML = "ACESSO PERMITIDO!<br><small>Senha: " + numeroSecreto + "</small>";
+                // --- VITÓRIA ---
+                tela.innerHTML = "ACESSO PERMITIDO!<br><small style='font-size:16px'>Senha: " + numeroSecreto + "</small>";
                 tela.style.backgroundColor = "#00ff41"; 
                 tela.style.color = "#000";
                 
-                sigma.innerText = "ACESSO LIBERADO! Clique abaixo para continuar.";
+                if (totalTentativas === 1) {
+                    sigma.innerText = "INCRÍVEL! De primeira! Clique abaixo para continuar.";
+                } else {
+                    sigma.innerText = "Muito bem, Agente! Hackeado em " + totalTentativas + " tentativas.";
+                }
 
                 document.getElementById("teclado-numerico").style.display = "none";
                 document.getElementById("btn-hack").style.display = "none";
                 
-                // MOSTRA O BOTÃO DE PROSSEGUIR (Sem redirecionar sozinho)
+                // MOSTRA O BOTÃO DE PROSSEGUIR
                 document.getElementById("btn-proxima-fase").style.display = "block";
 
             } else {
+                // --- ERRO ---
                 ultimoChuteErrado = numeroEscolhido;
                 tela.innerText = "ACESSO NEGADO";
                 tela.style.backgroundColor = "#ff3333"; 
+                
                 ativarModoPedagogico();
             }
         }
@@ -198,18 +228,21 @@
 
         function verificarRespostaPedagogica(resposta) {
             var sigma = document.getElementById("mensagem-sigma");
+            var tela = document.getElementById("tela-display");
             var areaPergunta = document.getElementById("area-pergunta");
+            var teclado = document.getElementById("teclado-numerico");
             var btnHack = document.getElementById("btn-hack");
 
             if (resposta === 'igual') {
-                document.getElementById("tela-display").innerText = "RACIOCÍNIO CORRETO";
-                document.getElementById("tela-display").style.backgroundColor = "#003b00";
+                tela.innerText = "RACIOCÍNIO CORRETO";
+                tela.style.backgroundColor = "#003b00"; 
                 
-                sigma.innerHTML = "Excelente! Liberei o <strong>DECODIFICADOR</strong>. Clique no botão amarelo.";
+                sigma.innerHTML = "Excelente! Como recompensa, liberei o <strong>DECODIFICADOR</strong>.<br>Clique no botão amarelo para descobrir a senha!";
+                
                 areaPergunta.style.display = "none";
                 btnHack.style.display = "block";
             } else {
-                sigma.innerText = "Negativo. Eventos independentes não têm memória. Tente de novo.";
+                sigma.innerText = "Negativo. Em eventos independentes, o passado não importa. Tente de novo.";
             }
         }
 
@@ -218,7 +251,8 @@
             var btnHack = document.getElementById("btn-hack");
             var teclado = document.getElementById("teclado-numerico");
 
-            sigma.innerHTML = "O Decodificador diz: <span class='texto-destaque'>SENHA É " + numeroSecreto + "</span>. Digite-a.";
+            sigma.innerHTML = "O Decodificador interceptou o sinal: <br><span class='texto-destaque'> A SENHA É " + numeroSecreto + "</span>.<br>Vá em frente, digite e finalize a missão.";
+
             btnHack.style.display = "none";
             teclado.style.display = "grid";
         }
@@ -227,5 +261,7 @@
             window.location.href = "missao_1b.html";
         }
     </script>
+
+    <script src="footer.js"></script>
 </body>
 </html>
