@@ -26,11 +26,11 @@ O objetivo é promover o **Letramento Estatístico** e a compreensão de **Proba
 
 | Tecnologia | Uso no Projeto |
 |------------|----------------|
-| HTML5 | Estrutura das páginas |
-| CSS3 | Estilização com tema hacker |
-| JavaScript (ES6+) | Lógica do jogo e interatividade |
-| Font Awesome 6.4.0 | Ícones |
-| Google Fonts | Fonte "Courier New" |
+| HTML5 | Estrutura semântica das páginas |
+| CSS3 | Estilização responsiva com tema "Hacker/Cyberpunk" |
+| JavaScript (ES6+) | Lógica do jogo, manipulação do DOM e Canvas |
+| LocalStorage | Persistência de dados para geração de relatórios |
+| Font Awesome | Ícones visuais |
 
 ---
 
@@ -38,72 +38,89 @@ O objetivo é promover o **Letramento Estatístico** e a compreensão de **Proba
 
 ```bash
 Projeto-AID/
-├── index.html              # Menu principal
-├── missao_1a.html          # Fase 1A: Cofre Digital (Eventos Independentes)
-├── missao_1b.html          # Fase 1B: Servidor (Eventos Dependentes)
-├── missao_2.html           # Fase 2: Análise de Gráficos (Fake News)
-├── missao_fase3.html       # Fase 3: Sincronização de Dados
-├── missao_fase4.html       # Fase 4: Cálculo de Média/Moda/Mediana
-├── footer.js               # Efeitos visuais (Matrix Rain) e rodapé
-└── README.md               # Documentação
+├── index.html          # Menu principal e Login
+├── missao_1a.html      # Fase 1A: Cofre Digital (Eventos Independentes)
+├── missao_1b.html      # Fase 1B: Servidor (Eventos Dependentes)
+├── missao_2.html       # Fase 2: Análise de Gráficos (Eixos Truncados)
+├── missao_fase3.html   # Fase 3: Sincronização (Tipos de Gráficos)
+├── missao_fase4.html   # Fase 4: Cálculo de Média/Moda/Mediana
+├── footer.js           # Script global: Rodapé, Matrix Rain e Bibliotecas
+└── README.md           # Documentação
+
 ```
 
 ---
 
 ## 🚀 Como Executar
 
-1. **Clone o repositório:**
-   ```bash
-   git clone https://github.com/profsergioericmatematica/Projeto-Integrador-IV-UNIVESP-AID-Agencia-de-Investigao-de-Dados.git
-   ```
+1. **Acesse Online (GitHub Pages):**
+[Clique aqui para jogar](https://profsergioericmatematica.github.io/Projeto-Integrador-IV-UNIVESP-AID-Agencia-de-Investigao-de-Dados/)
+2. **Ou execute localmente:**
+* Clone o repositório:
+```bash
+git clone [https://github.com/profsergioericmatematica/Projeto-Integrador-IV-UNIVESP-AID-Agencia-de-Investigao-de-Dados.git](https://github.com/profsergioericmatematica/Projeto-Integrador-IV-UNIVESP-AID-Agencia-de-Investigao-de-Dados.git)
 
-2. **Navegue até a pasta:**
-   ```bash
-   cd Projeto-Integrador-IV-UNIVESP-AID-Agencia-de-Investigao-de-Dados
-   ```
+```
 
-3. **Execute com um servidor local:**
-   - Método 1: Abra `index.html` diretamente no navegador
-   - Método 2: Use extensão "Live Server" no VS Code
-   - Método 3: Python: `python -m http.server 8000`
+
+* Abra o arquivo `index.html` em qualquer navegador moderno.
+
+
 
 ---
 
 ## 🕵️‍♂️ As Missões (Fases do Jogo)
 
-O jogo é dividido em 4 missões modulares, cada uma focada em uma habilidade específica da BNCC:
+O jogo é dividido em 4 missões modulares, alinhadas à BNCC:
 
 ### 🔓 Missão 1: A Invasão (Probabilidade)
-- **Parte A (Cofre Digital):** Aborda **Eventos Independentes**. O aluno deve compreender que o "reset" de uma senha digital mantém a probabilidade inalterada (com reposição).
-- **Parte B (Servidor de Arquivos):** Aborda **Eventos Dependentes**. O aluno visualiza a alteração do espaço amostral ao remover pastas físicas de um arquivo (sem reposição).
+
+* **Parte A (Cofre Digital):** Aborda **Eventos Independentes**. O aluno deve compreender que o "reset" de uma senha digital mantém a probabilidade inalterada.
+* **Parte B (Servidor de Arquivos):** Aborda **Eventos Dependentes**. O aluno visualiza a alteração do espaço amostral ao remover pastas de um arquivo.
 
 ### 👁️ Missão 2: Detector de Fraudes (Leitura Crítica)
-- O aluno atua como perito forense analisando notícias falsas.
-- **Desafio:** Identificar gráficos manipulados pela mídia (ex: eixos truncados, escalas desproporcionais e omissão de dados).
+
+* O aluno atua como perito forense analisando notícias falsas.
+* **Desafio:** Identificar gráficos manipulados pela mídia (Eixos Truncados e escalas desproporcionais).
 
 ### 🔄 Missão 3: Sincronização de Dados (Visualização)
-- Um desafio de associação cognitiva e agilidade.
-- **Desafio:** Conectar corretamente tipos de variáveis (Tempo, Comparação, Proporção) aos tipos de gráficos adequados (Linha, Colunas, Setores).
+
+* Um desafio de associação cognitiva.
+* **Desafio:** Conectar corretamente tipos de variáveis (Tempo, Comparação, Proporção) aos tipos de gráficos adequados.
 
 ### 🏆 Missão 4: A Decodificação Final (Estatística Aplicada)
-- O desafio final para neutralizar o sistema vilão.
-- **Desafio:** Calcular manualmente as Medidas de Tendência Central (**Média, Moda e Mediana**) para quebrar a criptografia final.
+
+* O desafio final para neutralizar o sistema vilão.
+* **Desafio:** Calcular manualmente **Média, Moda e Mediana** para quebrar a criptografia.
+
+---
+
+## 📊 Diferencial: Learning Analytics (Relatório de Desempenho)
+
+Um dos grandes diferenciais deste REA é o sistema de **rastreamento de aprendizagem**.
+Ao final do jogo, o sistema gera automaticamente um **arquivo .TXT** para download contendo:
+
+1. **Tempo de Resposta:** Quanto tempo o aluno levou em cada fase (diferenciando reflexão de "chute").
+2. **Diagnóstico de Erros:** Registro exato de qual erro conceitual foi cometido (ex: *"Tentou ligar Gráfico de Pizza com Variável Tempo"*).
+3. **Inputs do Aluno:** Mostra os valores que o aluno calculou erroneamente antes de acertar.
+
+Isso permite ao professor utilizar o jogo como **ferramenta diagnóstica**.
 
 ---
 
 ## 🧠 Metodologia e Abordagem Pedagógica
 
-Este projeto foi fundamentado em metodologias ativas de aprendizagem, alinhadas às diretrizes do Projeto Pedagógico do Curso (PPC) da UNIVESP.
+Este projeto foi fundamentado em metodologias ativas, alinhadas ao PPC da UNIVESP.
 
 ### 1. Metodologia de Desenvolvimento (Design Thinking)
 
-Utilizamos a abordagem do **Design Thinking** para estruturar a concepção do produto educacional:
+Utilizamos a abordagem do **Design Thinking**:
 
-* **Empatia:** Focamos em entender a dificuldade real dos alunos com a abstração estatística e a ansiedade matemática.
-* **Definição:** Delimitamos o problema e criamos a narrativa de "Investigação" para dar sentido prático aos dados.
-* **Ideação:** Brainstorming para criação do roteiro do "Agente Sigma" e a estruturação das 4 missões.
-* **Prototipagem:** Desenvolvimento incremental dos códigos HTML/JS modulares (Fases 1 a 4).
-* **Teste:** Validação técnica e pedagógica em cada etapa para corrigir erros (bugs) e refinar o sistema de feedback.
+* **Empatia:** Entender a ansiedade matemática dos alunos.
+* **Definição:** Criar uma narrativa de "Investigação" para dar sentido aos dados.
+* **Ideação:** Roteiro do "Agente Sigma" e estruturação das missões.
+* **Prototipagem:** Desenvolvimento incremental dos códigos.
+* **Teste:** Validação técnica e pedagógica.
 
 ### 2. Metodologia de Ensino
 
@@ -113,15 +130,16 @@ A aplicação pedagógica do jogo baseia-se em três pilares principais:
 * **Aprendizado Baseado em Jogos (ABJ):** Utilização do jogo digital como ferramenta de engajamento, imersão e motivação.
 * **Contextualização:** Transformação de conceitos abstratos (Média, Moda, Probabilidade) em ferramentas concretas de investigação forense.
 
-### 3. Sistema de Feedback e Andaimagem (Scaffolding)
 
-O jogo utiliza o conceito de **Andaimagem** (*Scaffolding*). O sistema não apenas aponta o erro, mas oferece suporte temporário para que o aluno construa o conhecimento na próxima tentativa.
+### 3. Sistema de Andaimagem (Scaffolding)
 
-| Tipo de Andaime | Onde aparece (A.I.D.) | Como funciona na prática |
+O jogo utiliza **Andaimagem**. O sistema não apenas aponta o erro, mas oferece suporte temporário:
+
+| Tipo de Andaime | Onde aparece | Como funciona na prática |
 | --- | --- | --- |
-| **Andaime de Suporte** | **Agente Sigma** | Quando o aluno erra, o Agente Sigma não diz apenas "Incorreto". Ele fornece uma dica conceitual (ex: *"Lembre-se: eventos independentes não têm memória"*), sustentando o aluno sem dar a resposta pronta. |
-| **Andaime Visual** | **Fase das Pastas** | Quando uma pasta vazia é removida da tela, o aluno recebe apoio visual para compreender que o denominador da fração mudou (ex: de 5 para 4). O conceito abstrato torna-se concreto e visível. |
-| **Andaime de Restrição** | **Bloqueio de Erro** | Na Fase 1, se o aluno erra, o jogo trava momentaneamente e obriga a resposta de uma pergunta teórica ("A chance mudou ou é igual?"). Isso impede a "tentativa e erro" cega e força a reflexão cognitiva. |
+| **Suporte Conceitual** | **Agente Sigma** | Fornece dicas conceituais ao errar (ex: *"Eventos independentes não têm memória"*). |
+| **Suporte Visual** | **Fase das Pastas** | Ao remover uma pasta, o aluno vê visualmente a fração mudando. |
+| **Restrição** | **Bloqueio de Erro** | Impede o avanço por "tentativa e erro", forçando a reflexão. |
 
 ---
 
@@ -174,27 +192,39 @@ O projeto passou por:
 
 ## 📞 Contato e Acesso
 
-* **Jogue Agora:** [Clique aqui para acessar o Jogo](https://profsergioericmatematica.github.io/Projeto-Integrador-IV-UNIVESP-AID-Agencia-de-Investigao-de-Dados/)
-* **Repositório:** [Código Fonte no GitHub](https://github.com/profsergioericmatematica/Projeto-Integrador-IV-UNIVESP-AID-Agencia-de-Investigao-de-Dados)
+* **Jogue Agora:** [Acessar Webgame A.I.D.](https://profsergioericmatematica.github.io/Projeto-Integrador-IV-UNIVESP-AID-Agencia-de-Investigao-de-Dados/)
+* **Repositório:** [GitHub](https://github.com/profsergioericmatematica/Projeto-Integrador-IV-UNIVESP-AID-Agencia-de-Investigao-de-Dados)
 * **Instituição:** [UNIVESP](https://www.univesp.br)
 
 ---
 
 ## 📝 Licença
 
-Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](LICENSE) para detalhes.
+Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](https://www.google.com/search?q=LICENSE) para detalhes.
 
 ---
 
 <p align="center">
-  <strong>Desenvolvido com 💙, 🔢 e 🎮 para a educação matemática brasileira</strong>
+<strong>Desenvolvido com 💙, 🔢 e 🎮 para a educação matemática brasileira</strong>
 </p>
 
 <p align="center">
-  <em>"A matemática é a linguagem com a qual Deus escreveu o universo."</em><br>
-  <em>— Galileu Galilei</em>
+<em>"A matemática é a linguagem com a qual Deus escreveu o universo."</em>
+
+
+
+
+<em>— Galileu Galilei</em>
 </p>
 
 <p align="center">
-  <strong>Última atualização: Janeiro 2026</strong>
+<strong>Última atualização: Janeiro 2026</strong>
 </p>
+
+```
+
+```
+
+
+
+
