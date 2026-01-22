@@ -66,9 +66,16 @@
             height: 180px;
             gap: 30px;
             padding: 10px;
-            border-left: 2px solid #333;
-            border-bottom: 2px solid #333;
+            /* As bordas serão controladas via JS agora */
             position: relative;
+        }
+
+        /* Classe para imagem responsiva */
+        .img-grafico-arquivo {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border: 1px solid #ccc; /* Moldura leve para a imagem */
         }
 
         .barra-container {
@@ -151,25 +158,11 @@
             transition: all 0.3s;
         }
 
-        #btn-validar { 
-            background-color: #003300; 
-            color: #00ff41; 
-            border-color: #00ff41; 
-        }
+        #btn-validar { background-color: #003300; color: #00ff41; border-color: #00ff41; }
+        #btn-validar:hover { background-color: #005500; }
         
-        #btn-validar:hover { 
-            background-color: #005500; 
-        }
-        
-        #btn-denunciar { 
-            background-color: #330000; 
-            color: #ff3333; 
-            border-color: #ff3333; 
-        }
-        
-        #btn-denunciar:hover { 
-            background-color: #550000; 
-        }
+        #btn-denunciar { background-color: #330000; color: #ff3333; border-color: #ff3333; }
+        #btn-denunciar:hover { background-color: #550000; }
         
         #btn-proximo {
             display: none; 
@@ -183,10 +176,7 @@
             border: none;
             border-radius: 5px;
         }
-
-        #btn-proximo:hover {
-            background: #e0e0e0;
-        }
+        #btn-proximo:hover { background: #e0e0e0; }
 
         #agente-box { 
             margin-top: 20px; 
@@ -206,15 +196,8 @@
             border-radius: 3px;
         }
 
-        .explicacao-erro {
-            color: #ff3333;
-            font-weight: bold;
-        }
-
-        .explicacao-acerto {
-            color: #00aa00;
-            font-weight: bold;
-        }
+        .explicacao-erro { color: #ff3333; font-weight: bold; }
+        .explicacao-acerto { color: #00aa00; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -236,11 +219,10 @@
             <div id="titulo-grafico">Carregando...</div>
             
             <div class="container-grafico" id="area-grafico">
-                <!-- Aqui será inserido o gráfico dinamicamente -->
-            </div>
+                </div>
             
             <div id="dica-box">
-                <strong>DICA:</strong> Verifique se a escala do gráfico começa em ZERO e se os valores correspondem às proporções visuais.
+                <strong>DICA:</strong> Carregando...
             </div>
         </div>
 
@@ -258,42 +240,38 @@
     </div>
 
     <script>
-        // NOVOS CASOS - Mais claros e educativos
         const casos = [
             {
                 titulo: "CRESCIMENTO DE VENDAS - EMPRESA RIVAL",
                 e_confiavel: false,
-                // Gráfico manipulado: eixo Y não começa em zero (começa em 90)
+                tipo: "css", // Gerado por código
                 valores: [
-                    { nome: "JAN", valor: "R$ 92", valorNumerico: 92, tamanhoCorreto: "20%" },
-                    { nome: "FEV", valor: "R$ 98", valorNumerico: 98, tamanhoCorreto: "80%" }
+                    { nome: "JAN", valor: "R$ 92", tamanhoCorreto: "20%" },
+                    { nome: "FEV", valor: "R$ 98", tamanhoCorreto: "80%" }
                 ],
-                explicacao: "<span class='explicacao-erro'>MANIPULADO!</span> O gráfico não começa em ZERO. Diferença real: apenas 6.5%, mas visualmente parece ser 4x maior.",
-                dica: "Observe que a barra de FEVEREIRO parece ser 4x maior que a de JANEIRO, mas os valores são R$92 vs R$98 (apenas 6.5% de diferença).",
+                explicacao: "<span class='explicacao-erro'>MANIPULADO!</span> O eixo Y começa em 90, fazendo uma diferença de 6% parecer gigantesca (Eixo Truncado).",
+                dica: "Observe o eixo vertical. Ele começa no zero? A diferença visual condiz com os números?",
                 manipulacao: "eixo_truncado"
             },
             {
                 titulo: "CRESCIMENTO DE VENDAS - NOSSA EMPRESA",
                 e_confiavel: true,
-                // Gráfico correto: começa em zero
-                valores: [
-                    { nome: "2024", valor: "100 un.", valorNumerico: 100, tamanhoCorreto: "50%" },
-                    { nome: "2025", valor: "200 un.", valorNumerico: 200, tamanhoCorreto: "100%" }
-                ],
+                tipo: "imagem", // <--- MUDANÇA AQUI: Agora usa imagem
+                src: "grafico2missao2.png", // Nome do arquivo na pasta
                 explicacao: "<span class='explicacao-acerto'>CONFIÁVEL!</span> O gráfico começa em ZERO e as proporções visuais correspondem aos valores reais.",
-                dica: "As vendas dobraram de 100 para 200 unidades, e visualmente a barra de 2025 é exatamente o dobro da barra de 2024.",
+                dica: "Analise a imagem. As vendas dobraram de 100 para 200. O tamanho das barras reflete isso?",
                 manipulacao: "nenhuma"
             },
             {
                 titulo: "PREFERÊNCIA DO CONSUMIDOR - PESQUISA SEM DADOS",
                 e_confiavel: false,
-                // Gráfico sem valores numéricos
+                tipo: "css", // Gerado por código
                 valores: [
-                    { nome: "PRODUTO A", valor: "??%", valorNumerico: 0, tamanhoCorreto: "85%" },
-                    { nome: "PRODUTO B", valor: "??%", valorNumerico: 0, tamanhoCorreto: "15%" }
+                    { nome: "PRODUTO A", valor: "??%", tamanhoCorreto: "85%" },
+                    { nome: "PRODUTO B", valor: "??%", tamanhoCorreto: "15%" }
                 ],
-                explicacao: "<span class='explicacao-erro'>MANIPULADO!</span> Gráfico sem valores numéricos não tem credibilidade. Não é possível verificar a veracidade.",
-                dica: "Um gráfico confiável sempre mostra os valores exatos ou percentuais. Gráficos com '??' ou sem valores são suspeitos.",
+                explicacao: "<span class='explicacao-erro'>MANIPULADO!</span> Gráfico sem valores numéricos não tem credibilidade.",
+                dica: "Um gráfico confiável sempre mostra os valores exatos. Gráficos com '??' são suspeitos.",
                 manipulacao: "valores_ausentes"
             }
         ];
@@ -304,86 +282,80 @@
         function carregarCaso() {
             bloqueado = false;
             const caso = casos[indiceAtual];
+            const container = document.getElementById("area-grafico");
             
+            // Atualiza textos
             document.getElementById("contador-casos").innerText = "Caso: " + (indiceAtual + 1) + "/" + casos.length;
             document.getElementById("titulo-grafico").innerText = caso.titulo;
-            document.getElementById("msg-sigma").innerHTML = caso.dica;
+            document.getElementById("msg-sigma").innerText = "Analise o gráfico acima.";
+            document.getElementById("dica-box").innerHTML = `<strong>DICA:</strong> ${caso.dica}`;
             document.getElementById("btn-proximo").style.display = "none";
             document.getElementById("controles").style.display = "flex";
             
-            // Atualizar dica específica
-            document.getElementById("dica-box").innerHTML = `<strong>DICA:</strong> ${caso.dica}`;
-
-            const container = document.getElementById("area-grafico");
             container.innerHTML = "";
-            
-            // Adicionar eixo Y
-            const eixoY = document.createElement("div");
-            eixoY.className = "eixo-y";
-            
-            // Para gráficos truncados (manipulados), mostrar escala enganosa
-            if (caso.manipulacao === "eixo_truncado") {
-                eixoY.innerHTML = `
-                    <div>100%</div>
-                    <div>95%</div>
-                    <div>90%</div>
-                    <div>85%</div>
-                    <div>80%</div>
-                `;
+
+            // LÓGICA: SE FOR IMAGEM
+            if (caso.tipo === "imagem") {
+                // Remove bordas do eixo cartesiano para mostrar a imagem limpa
+                container.style.borderLeft = "none";
+                container.style.borderBottom = "none";
                 
-                // Adicionar alerta visual sobre manipulação
-                const alerta = document.createElement("div");
-                alerta.className = "alerta-manipulacao";
-                alerta.style.top = "10px";
-                alerta.style.right = "10px";
-                alerta.innerText = "EIXO Y TRUNCADO";
-                container.appendChild(alerta);
+                // Insere a imagem
+                container.innerHTML = `<img src="${caso.src}" class="img-grafico-arquivo" alt="Gráfico do Caso ${indiceAtual+1}">`;
+            
             } else {
-                eixoY.innerHTML = `
-                    <div>100%</div>
-                    <div>75%</div>
-                    <div>50%</div>
-                    <div>25%</div>
-                    <div>0%</div>
-                `;
+                // LÓGICA: SE FOR GRÁFICO CSS (CÓDIGO ANTERIOR)
+                
+                // Restaura bordas do eixo cartesiano
+                container.style.borderLeft = "2px solid #333";
+                container.style.borderBottom = "2px solid #333";
+
+                // Adicionar eixo Y
+                const eixoY = document.createElement("div");
+                eixoY.className = "eixo-y";
+                
+                if (caso.manipulacao === "eixo_truncado") {
+                    eixoY.innerHTML = `<div>100%</div><div>95%</div><div>90%</div><div>85%</div><div>80%</div>`;
+                    const alerta = document.createElement("div");
+                    alerta.className = "alerta-manipulacao";
+                    alerta.style.top = "10px"; alerta.style.right = "10px";
+                    alerta.innerText = "EIXO Y TRUNCADO";
+                    container.appendChild(alerta);
+                } else {
+                    eixoY.innerHTML = `<div>100%</div><div>75%</div><div>50%</div><div>25%</div><div>0%</div>`;
+                }
+                container.appendChild(eixoY);
+                
+                // Criar barras dinâmicas
+                caso.valores.forEach(dado => {
+                    let barraContainer = document.createElement("div");
+                    barraContainer.className = "barra-container";
+                    
+                    let barra = document.createElement("div");
+                    barra.className = "barra";
+                    barra.style.height = "0%";
+                    barra.innerText = dado.valor;
+                    
+                    let rotulo = document.createElement("div");
+                    rotulo.className = "barra-rotulo";
+                    rotulo.innerText = dado.nome;
+                    
+                    barraContainer.appendChild(barra);
+                    barraContainer.appendChild(rotulo);
+                    container.appendChild(barraContainer);
+                    
+                    setTimeout(() => { barra.style.height = dado.tamanhoCorreto; }, 200);
+                });
             }
-            
-            container.appendChild(eixoY);
-            
-            // Criar barras
-            caso.valores.forEach(dado => {
-                let barraContainer = document.createElement("div");
-                barraContainer.className = "barra-container";
-                
-                let barra = document.createElement("div");
-                barra.className = "barra";
-                barra.style.height = "0%";
-                barra.innerText = dado.valor;
-                
-                let rotulo = document.createElement("div");
-                rotulo.className = "barra-rotulo";
-                rotulo.innerText = dado.nome;
-                
-                barraContainer.appendChild(barra);
-                barraContainer.appendChild(rotulo);
-                container.appendChild(barraContainer);
-                
-                // Animar a barra após um pequeno delay
-                setTimeout(() => { 
-                    barra.style.height = dado.tamanhoCorreto; 
-                }, 200);
-            });
         }
 
-        // FUNÇÃO DE LOG INTELIGENTE
+        // FUNÇÃO DE LOG INTELIGENTE (Mantida igual para funcionar o download)
         function registrarLog(texto, tipo = "info") {
             let tempoDecorrido = ((Date.now() - inicioFase) / 1000).toFixed(1);
             let prefixo = "[" + document.title.replace("A.I.D. - ", "") + " | " + tempoDecorrido + "s] ";
             let linha = prefixo + texto;
-
             let logAtual = localStorage.getItem('AID_Relatorio') || "";
             localStorage.setItem('AID_Relatorio', logAtual + linha + "\n");
-
             if (tipo === "erro") {
                 let totalErros = parseInt(localStorage.getItem('AID_TotalErros') || 0);
                 localStorage.setItem('AID_TotalErros', totalErros + 1);
@@ -393,7 +365,6 @@
         function analisar(escolha) {
             if (bloqueado) return;
             bloqueado = true;
-            
             const caso = casos[indiceAtual];
             const acertou = (escolha === caso.e_confiavel);
             const sigma = document.getElementById("msg-sigma");
@@ -410,7 +381,6 @@
             let btnProx = document.getElementById("btn-proximo");
             btnProx.style.display = "block";
 
-            // LÓGICA DO TEXTO DO BOTÃO
             if (indiceAtual === casos.length - 1) {
                 btnProx.innerText = "PROSSEGUIR PARA PRÓXIMA FASE >>";
             } else {
@@ -427,11 +397,9 @@
             }
         }
         
-        // Iniciar
         carregarCaso();
     </script>
-    </script>
+    
     <script src="footer.js"></script>
-
 </body>
 </html>
