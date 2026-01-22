@@ -1,3 +1,10 @@
+Com certeza! O README precisava de um ajuste crucial: **atualizar a descrição da Missão 1A**.
+
+No texto anterior, ela ainda constava como "Cofre Digital". Como acabamos de mudar a mecânica para **"Interceptação de Pacotes com Reset"** (para ensinar eventos independentes corretamente), atualizei essa parte. Também ajustei a formatação de alguns links.
+
+Aqui está o código Markdown **pronto para copiar e colar** no seu arquivo `README.md`:
+
+```markdown
 # 🕵️‍♂️ A.I.D. - Agência de Investigação de Dados
 
 > Projeto Integrador IV | Licenciatura em Matemática | UNIVESP | Produto Educacional (REA)
@@ -39,7 +46,7 @@ O objetivo é promover o **Letramento Estatístico** e a compreensão de **Proba
 ```bash
 Projeto-AID/
 ├── index.html          # Menu principal e Login
-├── missao_1a.html      # Fase 1A: Cofre Digital (Eventos Independentes)
+├── missao_1a.html      # Fase 1A: Interceptação (Eventos Independentes)
 ├── missao_1b.html      # Fase 1B: Servidor (Eventos Dependentes)
 ├── missao_2.html       # Fase 2: Análise de Gráficos (Eixos Truncados)
 ├── missao_fase3.html   # Fase 3: Sincronização (Tipos de Gráficos)
@@ -75,18 +82,18 @@ O jogo é dividido em 4 missões modulares, alinhadas à BNCC:
 
 ### 🔓 Missão 1: A Invasão (Probabilidade)
 
-* **Parte A (Cofre Digital):** Aborda **Eventos Independentes**. O aluno deve compreender que o "reset" de uma senha digital mantém a probabilidade inalterada.
-* **Parte B (Servidor de Arquivos):** Aborda **Eventos Dependentes**. O aluno visualiza a alteração do espaço amostral ao remover pastas de um arquivo.
+* **Parte A (Interceptação de Pacotes):** Aborda **Eventos Independentes**. O aluno interage com um sistema que "reseta" a cada erro (reposição), compreendendo que a probabilidade se mantém constante a cada nova tentativa.
+* **Parte B (Servidor de Arquivos):** Aborda **Eventos Dependentes**. O aluno visualiza a alteração do espaço amostral (fração) ao remover fisicamente pastas de um arquivo (sem reposição).
 
 ### 👁️ Missão 2: Detector de Fraudes (Leitura Crítica)
 
 * O aluno atua como perito forense analisando notícias falsas.
-* **Desafio:** Identificar gráficos manipulados pela mídia (Eixos Truncados e escalas desproporcionais).
+* **Desafio:** Identificar gráficos manipulados pela mídia (Eixos Truncados, escalas desproporcionais e omissão de dados).
 
 ### 🔄 Missão 3: Sincronização de Dados (Visualização)
 
 * Um desafio de associação cognitiva.
-* **Desafio:** Conectar corretamente tipos de variáveis (Tempo, Comparação, Proporção) aos tipos de gráficos adequados.
+* **Desafio:** Conectar corretamente tipos de variáveis (Tempo, Comparação, Proporção) aos tipos de gráficos adequados (Linha, Colunas, Setores).
 
 ### 🏆 Missão 4: A Decodificação Final (Estatística Aplicada)
 
@@ -126,10 +133,9 @@ Utilizamos a abordagem do **Design Thinking**:
 
 A aplicação pedagógica do jogo baseia-se em três pilares principais:
 
-* **Aprendizagem Baseada em Problemas (PBL):** O aluno não recebe o conteúdo passivamente. Ele é colocado diante de um "problema" (um crime cibernético, uma senha bloqueada, uma fraude na mídia) e precisa buscar o conhecimento matemático como ferramenta para resolvê-lo.
-* **Aprendizado Baseado em Jogos (ABJ):** Utilização do jogo digital como ferramenta de engajamento, imersão e motivação.
-* **Contextualização:** Transformação de conceitos abstratos (Média, Moda, Probabilidade) em ferramentas concretas de investigação forense.
-
+* **Aprendizagem Baseada em Problemas (PBL):** O aluno é colocado diante de um "problema" (um crime cibernético, uma fraude na mídia) e precisa buscar o conhecimento matemático para resolvê-lo.
+* **Aprendizado Baseado em Jogos (ABJ):** Utilização do jogo digital como ferramenta de engajamento e imersão.
+* **Contextualização:** Transformação de conceitos abstratos em ferramentas concretas de investigação.
 
 ### 3. Sistema de Andaimagem (Scaffolding)
 
@@ -156,20 +162,21 @@ O projeto atende às competências específicas de Matemática do 9º Ano:
 ## 🧪 Testes e Validação
 
 O projeto passou por:
-- ✅ Testes de funcionalidade em diferentes navegadores
-- ✅ Validação HTML/CSS
-- ✅ Testes de responsividade (mobile/desktop)
-- ✅ Validação pedagógica com professores
-- ✅ Teste com público-alvo (alunos do 9º ano)
+
+* ✅ Testes de funcionalidade em diferentes navegadores
+* ✅ Validação HTML/CSS
+* ✅ Testes de responsividade (mobile/desktop)
+* ✅ Validação pedagógica com professores
+* ✅ Teste com público-alvo (alunos do 9º ano)
 
 ---
 
 ## 📚 Referências
 
-- BNCC (Base Nacional Comum Curricular) - Matemática
-- PPC (Projeto Pedagógico do Curso) - UNIVESP
-- ZABALA, A. A prática educativa: como ensinar. Porto Alegre: Artmed, 1998.
-- PERRENOUD, P. Dez novas competências para ensinar. Porto Alegre: Artmed, 2000.
+* BNCC (Base Nacional Comum Curricular) - Matemática
+* PPC (Projeto Pedagógico do Curso) - UNIVESP
+* ZABALA, A. A prática educativa: como ensinar. Porto Alegre: Artmed, 1998.
+* PERRENOUD, P. Dez novas competências para ensinar. Porto Alegre: Artmed, 2000.
 
 ---
 
@@ -210,12 +217,11 @@ Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](h
 
 <p align="center">
 <em>"A matemática é a linguagem com a qual Deus escreveu o universo."</em>
-</p>
 
 
 
-<p align="center">
-<em>— Galileu Galilei —</em>
+
+<em>— Galileu Galilei</em>
 </p>
 
 <p align="center">
@@ -225,7 +231,3 @@ Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](h
 ```
 
 ```
-
-
-
-
