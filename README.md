@@ -210,10 +210,10 @@ Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](h
 
 <p align="center">
 <em>"A matemática é a linguagem com a qual Deus escreveu o universo."</em>
+</p>
 
 
-
-
+<p>
 <em>— Galileu Galilei</em>
 </p>
 
