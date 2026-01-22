@@ -3,297 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A.I.D. - Missão Cofre Digital V2</title>
-
+    <title>A.I.D. - Avaliação Conceitual</title>
     <style>
-        /* --- ESTILO (CSS) --- */
         body {
             background-color: #0d0d0d;
-            color: #00ff41; 
+            color: #00ff41;
             font-family: 'Courier New', Courier, monospace;
             display: flex;
-            flex-direction: column; /* <--- ESSA LINHA CONSERTA O LAYOUT */
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
             margin: 0;
             padding: 10px;
             box-sizing: border-box;
+            overflow: hidden;
         }
 
-        #container-jogo {
+        #interface-jogo {
             width: 100%;
-            max-width: 450px;
+            max-width: 700px;
             border: 2px solid #00ff41;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+            background-color: #001a00;
             text-align: center;
             position: relative;
-            /* Margem automática para garantir que o jogo fique centralizado e o rodapé no final */
-            margin-top: auto; 
-            margin-bottom: auto;
         }
 
-        #info-topo {
+        h2 { border-bottom: 1px dashed #00ff41; padding-bottom: 10px; margin-top: 0; }
+
+        #grid-dados {
             display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            margin-bottom: 10px;
-            color: #fff;
-            border-bottom: 1px solid #333;
-            padding-bottom: 5px;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            min-height: 150px;
         }
 
-        #tela-display {
-            background-color: #003b00;
-            color: #fff;
-            padding: 15px;
-            font-size: 24px;
-            margin-bottom: 20px;
-            border: 1px solid #00ff41;
-            min-height: 60px;
-            display: flex;
+        .pacote {
+            width: 50px; height: 50px;
+            background-color: #003300;
+            border: 2px solid #005500;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+            transition: transform 0.2s;
+        }
+        .pacote:hover { transform: scale(1.1); border-color: #00ff41; }
+        
+        .pacote.aberto { background-color: #005500; border-color: #fff; cursor: default; }
+
+        /* MODAL DE AVALIAÇÃO */
+        #modal-avaliacao {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.98);
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: background-color 0.3s;
-            
+            border-radius: 8px;
+            z-index: 100;
         }
 
-        #agente-sigma-box {
-            border-top: 1px dashed #00ff41;
-            margin-top: 20px;
-            padding-top: 10px;
-            font-size: 14px;
-            color: #ccffcc;
-            min-height: 80px;
-            overflow: visible;
-            white-space: normal;
+        .box-pergunta {
+            width: 90%;
+            max-width: 500px;
+            background: #002200;
+            border: 2px solid #ffff00;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(255, 255, 0, 0.2);
         }
 
-        .teclado {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-
-        button {
-            background-color: #1a1a1a;
-            color: #00ff41;
-            border: 1px solid #00ff41;
+        .opcoes { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+        
+        .btn-opcao {
             padding: 15px;
-            font-size: 18px;
+            background: #000;
+            border: 1px solid #00ff41;
+            color: #00ff41;
             cursor: pointer;
             font-family: inherit;
-            transition: 0.2s;
-        }
-
-        button:hover {
-            background-color: #00ff41;
-            color: #000;
-        }
-
-        /* Botão Próxima Fase */
-        #btn-proxima-fase {
-            display: none;
-            width: 100%;
-            background-color: #fff;
-            color: #000;
             font-weight: bold;
-            margin-top: 20px;
-            animation: piscar 1s infinite alternate;
+            font-size: 14px;
+            text-align: left;
+            transition: 0.3s;
         }
+        .btn-opcao:hover { background: #00ff41; color: #000; }
 
-        .btn-hack {
-            background-color: #ffff00; 
-            color: #000;
-            border: 2px solid #fff;
-            font-weight: bold;
-            display: none;
-            width: 100%;
-            margin-top: 10px;
-        }
-        .btn-hack:hover {
-            background-color: #ffcc00;
-        }
-
-        #area-pergunta {
-            display: none;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .btn-resposta {
-            width: 100%;
-            margin-bottom: 5px;
-        }
-
-        .texto-destaque {
-            color: #ffff00;
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-        
-        @keyframes piscar { from { opacity: 1; } to { opacity: 0.7; } }
+        #agente-box { margin-top: 20px; border-top: 1px dashed #00ff41; padding-top: 10px; color: #ccffcc; font-size: 14px; min-height: 40px;}
     </style>
 </head>
 <body>
 
-        <script>
-            // CRONÔMETRO DE FASE
-            // Salva a hora que a página carregou
-            const inicioFase = Date.now();
-        </script>
+    <script>const inicioFase = Date.now();</script>
 
-    <div id="container-jogo">
-        <div id="info-topo">
-            <span>🔒 V2.0</span>
-            <span id="contador-tentativas">Tentativas: 0</span>
+    <div id="interface-jogo">
+        <div style="display:flex; justify-content:space-between; font-size:12px;">
+            <span>📡 INTERCEPTAÇÃO</span>
+            <span>ALVO: CONCEITO</span>
         </div>
 
-        <h2>COFRE DIGITAL</h2>
-        
-        <div id="tela-display">SISTEMA BLOQUEADO</div>
+        <h2>CALIBRAGEM DE PROBABILIDADE</h2>
+        <p style="font-size: 14px; color: #aaa;">
+            Sistema com Reposição Automática.<br>
+            Clique em qualquer pacote para iniciar o diagnóstico.
+        </p>
 
-        <div id="teclado-numerico" class="teclado">
-            <button onclick="verificarChute(1)">1</button>
-            <button onclick="verificarChute(2)">2</button>
-            <button onclick="verificarChute(3)">3</button>
-            <button onclick="verificarChute(4)">4</button>
-            <button onclick="verificarChute(5)">5</button>
-            <button onclick="verificarChute(6)">6</button>
-            <button onclick="verificarChute(7)">7</button>
-            <button onclick="verificarChute(8)">8</button>
-            <button onclick="verificarChute(9)">9</button>
-            <button onclick="verificarChute(0)">0</button>
-        </div>
+        <div id="grid-dados">
+            </div>
 
-        <button id="btn-hack" class="btn-hack" onclick="revelarSenha()">🔓 EXECUTAR DECODIFICADOR</button>
-        
-        <button id="btn-proxima-fase" onclick="irProximaFase()">PROSSEGUIR PARA PRÓXIMA FASE >></button>
-
-        <div id="area-pergunta">
-            <p>O sistema reiniciou! A chance de acertar agora é MAIOR, MENOR ou IGUAL?</p>
-            <button class="btn-resposta" onclick="verificarRespostaPedagogica('mudou')">A chance MUDOU (Maior ou Menor)</button>
-            <button class="btn-resposta" onclick="verificarRespostaPedagogica('igual')">A chance continua IGUAL</button>
-        </div>
-
-        <div id="agente-sigma-box">
+        <div id="agente-box">
             <strong>🕵️ AGENTE SIGMA:</strong>
-            <p id="mensagem-sigma">Agente, precisamos da senha (0-9). A chance é de 1 em 10 (1/10). Faça uma tentativa! </p> <p>Guarde essa informação: SE ERRAR A SENHA É RESETADA E AS CHANCES CONINUARÃO SENDO 1 em 10.</p>
+            <span id="msg-sigma">Precisamos testar seu conhecimento antes da invasão real. Clique em um pacote.</span>
+        </div>
+
+        <div id="modal-avaliacao">
+            <div class="box-pergunta">
+                <h3 style="color: #ffff00; margin-top:0; text-align: center;">🛑 VERIFICAÇÃO DE LÓGICA</h3>
+                <p>O sistema acabou de realizar um <strong>RESET (Reposição)</strong>. Todas as peças voltaram ao estado inicial.</p>
+                <p><strong>PERGUNTA DO AGENTE:</strong><br>A probabilidade de encontrar a senha na próxima tentativa é maior, menor ou igual à anterior?</p>
+                
+                <div class="opcoes">
+                    <button class="btn-opcao" onclick="avaliarResposta('maior')">
+                        [A] MAIOR (Pois já gastei uma tentativa errada)
+                    </button>
+                    <button class="btn-opcao" onclick="avaliarResposta('menor')">
+                        [B] MENOR (O sistema ficou mais difícil)
+                    </button>
+                    <button class="btn-opcao" onclick="avaliarResposta('igual')">
+                        [C] IGUAL (Eventos independentes não têm memória)
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        var numeroSecreto = Math.floor(Math.random() * 10);
-        var ultimoChuteErrado = -1;
-        var totalTentativas = 0; 
+        let bloqueado = false;
 
-        function atualizarContador() {
-            document.getElementById("contador-tentativas").innerText = "Tentativas: " + totalTentativas;
-        }
-
-        // FUNÇÃO DE LOG INTELIGENTE
-        function registrarLog(texto, tipo = "info") {
-            // Calcula tempo decorrido desde que a página abriu
-            let tempoDecorrido = ((Date.now() - inicioFase) / 1000).toFixed(1); // Segundos
-
-            // Formata a linha do log
-            let prefixo = "[" + document.title.replace("A.I.D. - ", "") + " | " + tempoDecorrido + "s] ";
-            let linha = prefixo + texto;
-
-            // Salva no relatório
-            let logAtual = localStorage.getItem('AID_Relatorio') || "";
-            localStorage.setItem('AID_Relatorio', logAtual + linha + "\n");
-
-            // Se for erro, incrementa o contador global
-            if (tipo === "erro") {
-                let totalErros = parseInt(localStorage.getItem('AID_TotalErros') || 0);
-                localStorage.setItem('AID_TotalErros', totalErros + 1);
+        // Gera 10 pacotes visuais
+        function gerarPacotes() {
+            const grid = document.getElementById('grid-dados');
+            grid.innerHTML = "";
+            for (let i = 0; i < 10; i++) {
+                let div = document.createElement('div');
+                div.className = 'pacote';
+                div.innerHTML = '?';
+                div.onclick = () => acionarEvento(div);
+                grid.appendChild(div);
             }
         }
 
+        function acionarEvento(elemento) {
+            if (bloqueado) return;
+            bloqueado = true;
+            
+            // Visualmente marca o pacote
+            elemento.className = "pacote aberto";
+            elemento.innerText = "!";
 
-        function verificarChute(numeroEscolhido) {
-            totalTentativas++;
-            atualizarContador();
-
-            var tela = document.getElementById("tela-display");
-            var sigma = document.getElementById("mensagem-sigma");
-
-            if (numeroEscolhido === numeroSecreto) {
-                registrarLog("[MISSÃO 1A] Sucesso! Senha quebrada (" + numeroSecreto + ") após " + totalTentativas + " tentativas.","erro");
-                // --- VITÓRIA ---
-                tela.innerHTML = "ACESSO PERMITIDO!<br><small style='font-size:16px'>Senha: " + numeroSecreto + "</small>";
-                tela.style.backgroundColor = "#00ff41"; 
-                tela.style.color = "#000";
-                
-                if (totalTentativas === 1) {
-                    sigma.innerText = "INCRÍVEL! De primeira! Clique abaixo para continuar.";
-                } else {
-                    registrarLog("[MISSÃO 1A] Falha. Tentativa incorreta: " + numeroEscolhido, "erro");
-                    sigma.innerText = "Muito bem, Agente! Hackeado em " + totalTentativas + " tentativas.";
-                }
-
-                document.getElementById("teclado-numerico").style.display = "none";
-                document.getElementById("btn-hack").style.display = "none";
-                
-                // MOSTRA O BOTÃO DE PROSSEGUIR
-                document.getElementById("btn-proxima-fase").style.display = "block";
-
-            } else {
-                // --- ERRO ---
-                ultimoChuteErrado = numeroEscolhido;
-                tela.innerText = "ACESSO NEGADO";
-                tela.style.backgroundColor = "#ff3333"; 
-                
-                ativarModoPedagogico();
-            }
+            // Interrompe imediatamente para a pergunta
+            document.getElementById('msg-sigma').innerText = "Processando... Sistema solicitando verificação teórica.";
+            
+            setTimeout(() => {
+                document.getElementById('modal-avaliacao').style.display = 'flex';
+            }, 800);
         }
 
-        function ativarModoPedagogico() {
-            document.getElementById("teclado-numerico").style.display = "none";
-            document.getElementById("area-pergunta").style.display = "flex";
-            document.getElementById("mensagem-sigma").innerText = "O sistema resetou! O fato de você ter errado o número " + ultimoChuteErrado + " antes, muda sua chance agora?";
-        }
-
-        function verificarRespostaPedagogica(resposta) {
-            var sigma = document.getElementById("mensagem-sigma");
-            var tela = document.getElementById("tela-display");
-            var areaPergunta = document.getElementById("area-pergunta");
-            var teclado = document.getElementById("teclado-numerico");
-            var btnHack = document.getElementById("btn-hack");
+        function avaliarResposta(resposta) {
+            const modal = document.getElementById('modal-avaliacao');
+            const sigma = document.getElementById('msg-sigma');
 
             if (resposta === 'igual') {
-                tela.innerText = "RACIOCÍNIO CORRETO";
-                tela.style.backgroundColor = "#003b00"; 
+                // --- SUCESSO REAL (CONCEITUAL) ---
+                registrarLog("Sucesso Conceitual: Compreendeu Eventos Independentes.");
                 
-                sigma.innerHTML = "Excelente! Como recompensa, liberei o <strong>DECODIFICADOR</strong>.<br>Clique no botão amarelo para descobrir a senha!";
+                modal.style.display = 'none';
+                document.getElementById('grid-dados').innerHTML = "<h1 style='color:#ffff00; font-size:40px;'>🔓</h1>";
                 
-                areaPergunta.style.display = "none";
-                btnHack.style.display = "block";
+                sigma.innerHTML = "<span style='color:#ffff00'>CORRETO!</span> Em eventos com reposição, a chance é constante.<br>Acesso à próxima fase liberado.";
+                
+                // Botão para avançar
+                let btn = document.createElement("button");
+                btn.innerText = "IR PARA FASE 1B >>";
+                btn.style.cssText = "margin-top:15px; padding:15px; background:#00ff41; border:none; font-weight:bold; cursor:pointer;";
+                btn.onclick = () => window.location.href = "missao_1b.html";
+                document.getElementById('interface-jogo').appendChild(btn);
+
             } else {
-                sigma.innerText = "Negativo. Em eventos independentes, o passado não importa. Tente de novo.";
+                // --- ERRO CONCEITUAL ---
+                let erroMsg = resposta === 'maior' ? "Achou que a chance aumentava (Falácia do Jogador)." : "Achou que a chance diminuía.";
+                registrarLog("[MISSÃO 1A] Erro Conceitual: " + erroMsg, "erro");
+                
+                alert("Lógica Incorreta! Se houve REPOSIÇÃO (Reset), o cenário é idêntico ao anterior. A matemática não mudou. Tente novamente.");
+                
+                // Reinicia para tentar de novo
+                modal.style.display = 'none';
+                bloqueado = false;
+                gerarPacotes();
+                sigma.innerText = "Tente novamente. Concentre-se no conceito de 'Reposição'.";
             }
         }
 
-        function revelarSenha() {
-            var sigma = document.getElementById("mensagem-sigma");
-            var btnHack = document.getElementById("btn-hack");
-            var teclado = document.getElementById("teclado-numerico");
-
-            sigma.innerHTML = "O Decodificador interceptou o sinal: <br><span class='texto-destaque'> A SENHA É " + numeroSecreto + "</span>.<br>Vá em frente, digite e finalize a missão.";
-
-            btnHack.style.display = "none";
-            teclado.style.display = "grid";
+        // LOG (Padrão)
+        function registrarLog(texto, tipo = "info") {
+            let tempoDecorrido = ((Date.now() - inicioFase) / 1000).toFixed(1);
+            let linha = "[MISSÃO 1A | " + tempoDecorrido + "s] " + texto;
+            let logAtual = localStorage.getItem('AID_Relatorio') || "";
+            localStorage.setItem('AID_Relatorio', logAtual + linha + "\n");
+            if (tipo === "erro") {
+                let t = parseInt(localStorage.getItem('AID_TotalErros') || 0);
+                localStorage.setItem('AID_TotalErros', t + 1);
+            }
         }
 
-        function irProximaFase() {
-            window.location.href = "missao_1b.html";
-        }
+        gerarPacotes();
     </script>
-
     <script src="footer.js"></script>
 </body>
 </html>
