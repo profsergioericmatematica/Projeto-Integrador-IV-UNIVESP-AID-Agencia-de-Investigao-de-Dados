@@ -213,8 +213,8 @@ Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](h
 </p>
 
 
-<p>
-<em>— Galileu Galilei</em>
+<p align="center">
+<em>— Galileu Galilei —</em>
 </p>
 
 <p align="center">
