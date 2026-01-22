@@ -1,10 +1,3 @@
-Com certeza! O README precisava de um ajuste crucial: **atualizar a descrição da Missão 1A**.
-
-No texto anterior, ela ainda constava como "Cofre Digital". Como acabamos de mudar a mecânica para **"Interceptação de Pacotes com Reset"** (para ensinar eventos independentes corretamente), atualizei essa parte. Também ajustei a formatação de alguns links.
-
-Aqui está o código Markdown **pronto para copiar e colar** no seu arquivo `README.md`:
-
-```markdown
 # 🕵️‍♂️ A.I.D. - Agência de Investigação de Dados
 
 > Projeto Integrador IV | Licenciatura em Matemática | UNIVESP | Produto Educacional (REA)
