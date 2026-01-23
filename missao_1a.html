@@ -162,17 +162,37 @@
         function acionarEvento(elemento) {
             if (bloqueado) return;
             bloqueado = true;
-            
+    
             // Visualmente marca o pacote
             elemento.className = "pacote aberto";
             elemento.innerText = "!";
 
-            // Interrompe imediatamente para a pergunta
-            document.getElementById('msg-sigma').innerText = "Processando... Sistema solicitando verificação teórica.";
-            
-            setTimeout(() => {
-                document.getElementById('modal-avaliacao').style.display = 'flex';
-            }, 800);
+            // Referência ao elemento de texto
+            const sigmaMsg = document.getElementById('msg-sigma');
+    
+            // Configuração do Cronômetro
+            let tempoRestante = 4;
+
+            // Define a mensagem inicial imediatamente
+            sigmaMsg.innerHTML = `Processando... Sistema solicitando verificação teórica.<br>
+            <span id="timer-display" style="color: #ffff00; font-weight: bold; font-size: 16px;">[ AGUARDE: ${tempoRestante}s ]</span>`;
+    
+            // Cria o intervalo que roda a cada 1 segundo (1000ms)
+            const contagem = setInterval(() => {
+                tempoRestante--; // Diminui 1 segundo
+
+                if (tempoRestante >= 0) {
+                    // Se ainda não acabou, atualiza o número na tela
+                    const display = document.getElementById('timer-display');
+                    if (display) {
+                        display.innerText = `[ AGUARDE: ${tempoRestante}s ]`;
+                    }
+                } else {
+                    // Se o tempo acabou (passou do 0), para o loop e abre o modal
+                    clearInterval(contagem);
+                    document.getElementById('modal-avaliacao').style.display = 'flex';
+                }
+            }, 1000);
         }
 
         function avaliarResposta(resposta) {
